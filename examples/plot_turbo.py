@@ -9,7 +9,7 @@ The noise scattering at a compressor inlet and outlet
  `Competence Center of Gas Exchange (CCGEx) <https://www.ccgex.kth.se/>`_\.
 """
 # %%
-# .. image:: compressor.jpg
+# .. image:: ../image/compressor.jpg
 #    :width: 800
 
 # %%

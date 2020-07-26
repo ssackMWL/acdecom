@@ -10,7 +10,7 @@ The geometry is the same as in `this study <https://www.sciencedirect.com/scienc
 """
 
 # %%
-# .. image:: orifice.png
+# .. image:: ../image/orifice.png
 #    :width: 800
 #
 # 1. Initialization

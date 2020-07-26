@@ -4,11 +4,11 @@ The empty circular duct with flow and higher-order modes
 ========================================================
 
 In this example we extract higher-order modes from measurement data in a circular duct with moderate mean flow.
-The data is part of `this study <https://www.ingentaconnect.com/content/dav/aaua/2016/00000102/00000005/art00008>`\,
+The data is part of `this study <https://www.ingentaconnect.com/content/dav/aaua/2016/00000102/00000005/art00008>`_\,
 which is referred here for further details.
 """
 # %%
-# .. image:: wave2.jpg
+# .. image:: ../image/wave2.jpg
 #    :width: 800
 
 

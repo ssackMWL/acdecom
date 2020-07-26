@@ -1,0 +1,6 @@
+numpy
+matplotlib
+scipy
+sphinx-gallery
+numpydoc
+autodoc
