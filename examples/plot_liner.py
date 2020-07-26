@@ -9,7 +9,7 @@ which is referred to here for further details.
 """
 
 # %%
-# .. image:: ../image/liner.png
+# .. image:: ../../image/liner.png
 #    :width: 800
 
 

@@ -8,7 +8,7 @@ The data is part of `this study <https://www.ingentaconnect.com/content/dav/aaua
 which is referred here for further details.
 """
 # %%
-# .. image:: ../image/wave2.jpg
+# .. image:: ../../image/wave2.JPG
 #    :width: 800
 
 

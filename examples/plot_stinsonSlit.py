@@ -9,7 +9,7 @@ In this example we define a custom wavenumber. We inherit from the :class:`.Wave
 
 
 # %%
-# .. image:: ../image/wave1.jpg
+# .. image:: ../../image/wave1.JPG
 #    :width: 800
 
 

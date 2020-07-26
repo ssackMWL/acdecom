@@ -8,7 +8,7 @@ esults correspondto Rienstra "Fundamentals of Duct Acoustics" (Figures 7 and 8).
 """
 
 # %%
-# .. image:: ../../_images/ripples.jpg
+# .. image:: ../../image/ripples.jpg
 #    :width: 800
 
 
