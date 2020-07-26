@@ -4,3 +4,4 @@ scipy
 sphinx-gallery
 numpydoc
 autodoc
+sphinx-autopackagesummary 
