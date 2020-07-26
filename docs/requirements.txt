@@ -4,3 +4,5 @@ scipy
 sphinx-gallery
 numpydoc
 autodoc
+sphinx-autopackagesummary 
+sphinx == 3.1.1
