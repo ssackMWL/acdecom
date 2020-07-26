@@ -15,7 +15,7 @@ How to define custom wavenumber functions
 In this example we define a custom wavenumber. We inherit from the :class:`.WaveGuide` class and overwrite the internal
 :meth:`.WaveGuide.get_wavenumber` function. By doing so, we have access to the internal class arguments, such as the domain properties.
 
-.. image:: wave1.jpg
+.. image:: ../image/wave1.jpg
    :width: 800
 
 1. Inheritance
@@ -166,7 +166,7 @@ slit length and slit width and plot the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  21.045 seconds)
+   **Total running time of the script:** ( 0 minutes  11.375 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_stinsonSlit.py:

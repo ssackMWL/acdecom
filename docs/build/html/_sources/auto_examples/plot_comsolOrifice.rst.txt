@@ -17,7 +17,7 @@ from two Comsol Multiphysics simulations with a similar setup as in
 `this study <https://www.sciencedirect.com/science/article/abs/pii/S0022460X17306752?via%3Dihub>`\.
 The geometry is the same as in `this study <https://www.sciencedirect.com/science/article/abs/pii/S0022460X09002995>`\.
 
-.. image:: orifice.png
+.. image:: ../image/orifice.png
    :width: 800
 
 1. Initialization
@@ -520,7 +520,7 @@ amplification can occur.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  9.919 seconds)
+   **Total running time of the script:** ( 0 minutes  10.221 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_comsolOrifice.py:

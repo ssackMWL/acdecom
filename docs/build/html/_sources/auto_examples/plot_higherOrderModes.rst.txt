@@ -13,10 +13,10 @@ The empty circular duct with flow and higher-order modes
 ========================================================
 
 In this example we extract higher-order modes from measurement data in a circular duct with moderate mean flow.
-The data is part of `this study <https://www.ingentaconnect.com/content/dav/aaua/2016/00000102/00000005/art00008>`\,
+The data is part of `this study <https://www.ingentaconnect.com/content/dav/aaua/2016/00000102/00000005/art00008>`_\,
 which is referred here for further details.
 
-.. image:: wave2.jpg
+.. image:: ../image/wave2.jpg
    :width: 800
 
 1. Initialization
@@ -185,7 +185,7 @@ and downstream side of the duct, using the two *WaveGuide* objects defined earli
 
  .. code-block:: none
 
-    C:\Users\drste\Documents\StefansData\Papers\ModeDecompositionSoftware\src\acdecom.py:1280: UserWarning: The Modal analysis is ill-conditioned for some of the frequencies.
+    C:\Users\drste\Documents\StefansData\Papers\ModeDecompositionSoftware\src\acdecom.py:1322: UserWarning: The Modal analysis is ill-conditioned for some of the frequencies.
       warnings.warn("The Modal analysis is ill-conditioned for some of the frequencies.")
 
 
@@ -314,7 +314,7 @@ Finally, we can plot the transmission and reflection coefficients of the 6 propa
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  51.992 seconds)
+   **Total running time of the script:** ( 1 minutes  29.245 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_higherOrderModes.py:

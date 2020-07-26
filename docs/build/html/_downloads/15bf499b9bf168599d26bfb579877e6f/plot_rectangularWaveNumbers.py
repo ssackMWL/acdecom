@@ -10,7 +10,7 @@ wetted perimeter with the hydraulic radius. The Stinson model is derived for arb
 """
 
 # %%
-# .. image:: channel.jpg
+# .. image:: ../image/channel.jpg
 #    :width: 800
 
 
