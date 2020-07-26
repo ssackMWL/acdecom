@@ -1,0 +1,6 @@
+acdecom.WaveGuide.set\_microphone\_positions
+============================================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.set_microphone_positions

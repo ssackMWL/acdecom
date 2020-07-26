@@ -1,0 +1,6 @@
+acdecom.WaveGuide.get\_radius
+=============================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.get_radius

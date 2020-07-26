@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The noise scattering at a compressor inlet and outlet &#8212; acdecom 20/06/12 documentation</title>
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The transmission loss (TL) along a duct liner" href="plot_liner.html" />
+    <link rel="prev" title="The empty circular duct with flow and higher-order modes" href="plot_higherOrderModes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plot_liner.html" title="The transmission loss (TL) along a duct liner"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="plot_higherOrderModes.html" title="The empty circular duct with flow and higher-order modes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">The noise scattering at a compressor inlet and outlet</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-turbo-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="the-noise-scattering-at-a-compressor-inlet-and-outlet">
+<span id="sphx-glr-auto-examples-plot-turbo-py"></span><h1>The noise scattering at a compressor inlet and outlet<a class="headerlink" href="#the-noise-scattering-at-a-compressor-inlet-and-outlet" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><p>In this example we extract the scattering of noise at a compressor inlet and outlet. In addition to measuring the
+pressure with flush-mounted microphones, we will use the temperature, and flow velocity that was acquired during the
+measurement. The data comes from a study performed at the
+<a class="reference external" href="https://www.ccgex.kth.se/">Competence Center of Gas Exchange (CCGEx)</a>.</p>
+</div></blockquote>
+<a class="reference internal image-reference" href="auto_examples\compressor.jpg"><img alt="auto_examples\compressor.jpg" src="auto_examples\compressor.jpg" style="width: 800px;" /></a>
+<div class="section" id="initialization">
+<h2>1. Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
+<p>First, we import the packages needed for this example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">acdecom</span>
+</pre></div>
+</div>
+<p>The compressor intake and outlet have a circular cross section of the radius 0.026 m and 0.028 m.
+The highest frequency of interest is 3200 Hz.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">section</span> <span class="o">=</span> <span class="s2">&quot;circular&quot;</span>
+<span class="n">radius_intake</span> <span class="o">=</span> <span class="mf">0.026</span>  <span class="c1"># m</span>
+<span class="n">radius_outlet</span> <span class="o">=</span> <span class="mf">0.028</span>  <span class="c1"># m</span>
+<span class="n">f_max</span> <span class="o">=</span> <span class="mi">3200</span>  <span class="c1"># Hz</span>
+</pre></div>
+</div>
+<p>During the test, test ducts were mounted to the intake and outlet. Those ducts were equipped with three microphones
+each. The first microphone had a distance to the intake of 0.73 m and 1.17 m to the outlet.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">distance_intake</span> <span class="o">=</span> <span class="mf">0.073</span>  <span class="c1"># m</span>
+<span class="n">distance_outlet</span> <span class="o">=</span> <span class="mf">1.17</span>  <span class="c1"># m</span>
+</pre></div>
+</div>
+<p>To analyze the measurement data, we create objects for the intake and the outlet test pipes.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">td_intake</span> <span class="o">=</span> <span class="n">acdecom</span><span class="o">.</span><span class="n">WaveGuide</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="n">radius_intake</span><span class="p">,),</span> <span class="n">cross_section</span><span class="o">=</span><span class="n">section</span><span class="p">,</span> <span class="n">f_max</span><span class="o">=</span><span class="n">f_max</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="s2">&quot;kirchoff&quot;</span><span class="p">,</span>
+                              <span class="n">distance</span><span class="o">=</span><span class="n">distance_intake</span><span class="p">,</span> <span class="n">flip_flow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">td_outlet</span> <span class="o">=</span> <span class="n">acdecom</span><span class="o">.</span><span class="n">WaveGuide</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="n">radius_outlet</span><span class="p">,),</span> <span class="n">cross_section</span><span class="o">=</span><span class="n">section</span><span class="p">,</span> <span class="n">f_max</span><span class="o">=</span><span class="n">f_max</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="s2">&quot;kirchoff&quot;</span><span class="p">,</span>
+                              <span class="n">distance</span><span class="o">=</span><span class="n">distance_outlet</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The standard flow direction is in <span class="math notranslate nohighlight">\(P_+\)</span> direction. Therefore, on the intake side, the Mach-number must be
+either set negative or the argument <em>flipFlow</em> must be set to <em>True</em>.</p>
+</div>
+</div>
+<div class="section" id="sensor-positions">
+<h2>2. Sensor Positions<a class="headerlink" href="#sensor-positions" title="Permalink to this headline">¶</a></h2>
+<p>We define lists with microphone positions at the intake and outlet and assign them to the <em>WaveGuides</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">z_intake</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.043</span><span class="p">,</span> <span class="mf">0.324</span><span class="p">]</span>  <span class="c1"># m</span>
+<span class="n">r_intake</span> <span class="o">=</span> <span class="p">[</span><span class="n">radius_intake</span><span class="p">,</span> <span class="n">radius_intake</span><span class="p">,</span> <span class="n">radius_intake</span><span class="p">]</span>  <span class="c1"># m</span>
+<span class="n">phi_intake</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># deg</span>
+
+<span class="n">z_outlet</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.054</span><span class="p">,</span> <span class="mf">0.284</span><span class="p">]</span>  <span class="c1"># m</span>
+<span class="n">r_outlet</span> <span class="o">=</span> <span class="p">[</span><span class="n">radius_outlet</span><span class="p">,</span> <span class="n">radius_outlet</span><span class="p">,</span> <span class="n">radius_outlet</span><span class="p">]</span>  <span class="c1"># m</span>
+<span class="n">phi_outlet</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="c1">#  deg</span>
+
+<span class="n">td_intake</span><span class="o">.</span><span class="n">set_microphone_positions</span><span class="p">(</span><span class="n">z_intake</span><span class="p">,</span> <span class="n">r_intake</span><span class="p">,</span> <span class="n">phi_intake</span><span class="p">,</span> <span class="n">cylindrical_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">td_outlet</span><span class="o">.</span><span class="n">set_microphone_positions</span><span class="p">(</span><span class="n">z_outlet</span><span class="p">,</span> <span class="n">r_outlet</span><span class="p">,</span> <span class="n">phi_outlet</span><span class="p">,</span> <span class="n">cylindrical_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="decomposition">
+<h2>3. Decomposition<a class="headerlink" href="#decomposition" title="Permalink to this headline">¶</a></h2>
+<p>Next, we read the measurement data. The measurement must be pre-processed in a format that is understood by the
+<em>WaveGuide</em> object. This is generally a numpy.ndArray, wherein the columns contain the measurement data, such
+as the measured frequency, the pressure values for that frequency, the bulk Mach-number, and the temperature.
+The rows can be different frequencies or different sound excitations (cases). In this example the
+measurement was post-processed into a .txt file and can be loaded with the
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html">numpy.loadtxt</a> function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The pressure used for the decomposition must be pre-processed, for example to account for microphone calibration.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pressure</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s2">&quot;data/turbo.txt&quot;</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We review the file’s header to understand how the data is stored in our input file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/turbo.txt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pressure_file</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">pressure_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;# Mach-Number Intake&#39;, &#39;Mach-Number Outlet&#39;, &#39;temperature Intake&#39;, &#39;temperature Outlet&#39;, &#39;f&#39;, &#39;Mic1&#39;, &#39;Mic2&#39;, &#39;Mic3&#39;, &#39;Mic4&#39;, &#39;Mic5&#39;, &#39;Mic6&#39;, &#39;case\n&#39;]
+</pre></div>
+</div>
+<p>The Mach-numbers at the intake and outlet are stored in columns 0 and 1, the temperatures in columns 2 and 3,
+and the frequency in column 4. The intake microphones (1, 2, and 3) are in columns 5, 6, and 7. The outlet
+microphones (3, 5, and 6) are in columns 8, 9, and 10. The case number is in the last column.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Machnumber_intake</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">Machnumber_outlet</span><span class="o">=</span> <span class="mi">1</span>
+<span class="n">temperature_intake</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">temperature_outlet</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">f</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">mics_intake</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="n">mics_outlet</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="n">case</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>Next, we decompose the sound-fields into the propagating modes. We decompose the sound-fields on the intake
+and outlet side of the duct, using the two <em>WaveGuide</em> objects defined earlier.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">decomp_intake</span><span class="p">,</span> <span class="n">headers_intake</span> <span class="o">=</span> <span class="n">td_intake</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">mics_intake</span><span class="p">,</span>  <span class="n">temperature_col</span><span class="o">=</span><span class="n">temperature_intake</span><span class="p">,</span>
+                                                    <span class="n">case_col</span><span class="o">=</span><span class="n">case</span><span class="p">,</span> <span class="n">Mach_col</span><span class="o">=</span><span class="n">Machnumber_intake</span><span class="p">)</span>
+
+<span class="n">decomp_outlet</span><span class="p">,</span> <span class="n">headers_outlet</span> <span class="o">=</span> <span class="n">td_outlet</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">mics_outlet</span><span class="p">,</span>  <span class="n">temperature_col</span><span class="o">=</span><span class="n">temperature_outlet</span><span class="p">,</span>
+                                                    <span class="n">case_col</span><span class="o">=</span><span class="n">case</span><span class="p">,</span> <span class="n">Mach_col</span><span class="o">=</span><span class="n">Machnumber_outlet</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The decomposition may show warnings for ill-conditioned modal matrices. This typically happens for frequencies close
+to the cut-on of a mode. However, it can also indicate that the microphone array is unable to separate the
+modes. The condition number of the wave decomposition is stored in the data returned by
+<a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.decompose.html#acdecom.WaveGuide.decompose" title="acdecom.WaveGuide.decompose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.decompose()</span></code></a> and should be checked in case a warning is triggered.</p>
+</div>
+</div>
+<div class="section" id="further-post-processing">
+<h2>4. Further Post-processing<a class="headerlink" href="#further-post-processing" title="Permalink to this headline">¶</a></h2>
+<p>We can print the <em>headersDS</em> to see the names of the columns of the arrays that store the decomposed sound fields.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">headers_intake</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;(0,0) plus Direction&#39;, &#39;(0,0) minus Direction&#39;, &#39;f&#39;, &#39;Mach_number&#39;, &#39;temperature&#39;, &#39;Ps&#39;, &#39;condition number&#39;, &#39;case&#39;]
+</pre></div>
+</div>
+<p>We use that information to extract the modal data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">minusmodes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># from headers_intake</span>
+<span class="n">plusmodes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Furthermore, we acquire the unique decomposed frequency points.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">frequs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">decomp_intake</span><span class="p">[:,</span> <span class="n">headers_intake</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)]))</span>
+<span class="n">nof</span> <span class="o">=</span> <span class="n">frequs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For each of the frequencies, we can compute the scattering matrix by solving a linear system of equations
+<span class="math notranslate nohighlight">\(S = p_+ p_-^{-1}\)</span>, where <span class="math notranslate nohighlight">\(S\)</span> is the scattering matrix and  <span class="math notranslate nohighlight">\(p_{\pm}\)</span> are matrices containing the
+acoustic modes placed in rows and the different test cases placed in columns.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Details for the computation of the Scattering Matrix and the procedure to measure the different test-cases can be
+found in <a class="reference external" href="https://www.ingentaconnect.com/content/dav/aaua/2016/00000102/00000005/art00008">this study</a>.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">nof</span><span class="p">),</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">fIndx</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">frequs</span><span class="p">):</span>
+    <span class="n">frequ_rows</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">decomp_intake</span><span class="p">[:,</span> <span class="n">headers_intake</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)]</span> <span class="o">==</span> <span class="n">f</span><span class="p">)</span>
+    <span class="n">ppm_intake</span> <span class="o">=</span> <span class="n">decomp_intake</span><span class="p">[</span><span class="n">frequ_rows</span><span class="p">]</span>
+    <span class="n">ppm_outlet</span> <span class="o">=</span> <span class="n">decomp_outlet</span><span class="p">[</span><span class="n">frequ_rows</span><span class="p">]</span>
+    <span class="n">pp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">ppm_intake</span><span class="p">[:,</span><span class="n">plusmodes</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ppm_outlet</span><span class="p">[:,</span><span class="n">plusmodes</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+    <span class="n">pm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">ppm_intake</span><span class="p">[:,</span><span class="n">minusmodes</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ppm_outlet</span><span class="p">[:,</span><span class="n">minusmodes</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+    <span class="n">S</span><span class="p">[:,:,</span><span class="n">fIndx</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">pm</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot">
+<h2>5. Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h2>
+<p>Finally, we can plot the transmission and reflection coefficients at the intake and outlet.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequs</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]),</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#67A3C1&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Reflection Intake&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequs</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]),</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#67A3C1&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Transmission Intake&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequs</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]),</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#D38D7B&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Reflection Outlet&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequs</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span> <span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]),</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#D38D7B&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Transmission Outlet&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [Hz]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Scattering Magnitude&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">300</span><span class="p">,</span><span class="mi">3200</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="plot turbo" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_turbo_001.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.775 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-turbo-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/bebbf1c8da429255e19b48453e9b988e/plot_turbo.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_turbo.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/717b2ab272afe0e7360766f751fcd5b0/plot_turbo.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_turbo.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The noise scattering at a compressor inlet and outlet</a><ul>
+<li><a class="reference internal" href="#initialization">1. Initialization</a></li>
+<li><a class="reference internal" href="#sensor-positions">2. Sensor Positions</a></li>
+<li><a class="reference internal" href="#decomposition">3. Decomposition</a></li>
+<li><a class="reference internal" href="#further-post-processing">4. Further Post-processing</a></li>
+<li><a class="reference internal" href="#plot">5. Plot</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="plot_higherOrderModes.html"
+                        title="previous chapter">The empty circular duct with flow and higher-order modes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="plot_liner.html"
+                        title="next chapter">The transmission loss (TL) along a duct liner</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/auto_examples/plot_turbo.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plot_liner.html" title="The transmission loss (TL) along a duct liner"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="plot_higherOrderModes.html" title="The empty circular duct with flow and higher-order modes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">The noise scattering at a compressor inlet and outlet</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Stefan Sack.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

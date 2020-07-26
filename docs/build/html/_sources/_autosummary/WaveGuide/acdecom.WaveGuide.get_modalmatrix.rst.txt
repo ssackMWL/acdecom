@@ -1,0 +1,6 @@
+acdecom.WaveGuide.get\_modalmatrix
+==================================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.get_modalmatrix

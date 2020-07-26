@@ -1,0 +1,6 @@
+acdecom.WaveGuide.get\_psi\_circular
+====================================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.get_psi_circular

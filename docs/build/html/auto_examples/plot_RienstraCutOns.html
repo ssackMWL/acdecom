@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to compute wavenumbers and cut-ons &#8212; acdecom 20/06/12 documentation</title>
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How to post-process simulation data" href="plot_comsolOrifice.html" />
+    <link rel="prev" title="The transmission loss (TL) along a duct liner" href="plot_liner.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plot_comsolOrifice.html" title="How to post-process simulation data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="plot_liner.html" title="The transmission loss (TL) along a duct liner"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to compute wavenumbers and cut-ons</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-rienstracutons-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="how-to-compute-wavenumbers-and-cut-ons">
+<span id="sphx-glr-auto-examples-plot-rienstracutons-py"></span><h1>How to compute wavenumbers and cut-ons<a class="headerlink" href="#how-to-compute-wavenumbers-and-cut-ons" title="Permalink to this headline">¶</a></h1>
+<p>In this example, the wavenumbers and cut-on modes in a circular waveguide without flow are computed and plotted. The r
+esults correspondto Rienstra “Fundamentals of Duct Acoustics” (Figures 7 and 8).</p>
+<a class="reference internal image-reference" href="auto_examples\ripples.jpg"><img alt="auto_examples\ripples.jpg" src="auto_examples\ripples.jpg" style="width: 800px;" /></a>
+<div class="section" id="initialization">
+<h2>1. Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
+<p>First, we import the packages needed for this example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">acdecom</span>
+</pre></div>
+</div>
+<p>In this example we compute the wavenumbers for arbitrary mode orders in a circular duct of radius 0.1 m
+without background flow.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">section</span> <span class="o">=</span> <span class="s2">&quot;circular&quot;</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># [m]</span>
+<span class="n">Mach_number</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>We create an object for our test section. We use the standard conditions for ambient air inside the duct, which are
+predefined.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">td</span> <span class="o">=</span> <span class="n">acdecom</span><span class="o">.</span><span class="n">WaveGuide</span><span class="p">(</span><span class="n">cross_section</span> <span class="o">=</span> <span class="n">section</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="n">radius</span><span class="p">,),</span> <span class="n">M</span><span class="o">=</span><span class="n">Mach_number</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From the <em>td</em> object, we can get the  <a class="reference internal" href="../_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveGuide</span></code></a> specific properties.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">get_domainvalues</span><span class="p">())</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;density&#39;: 1.2002432611667804, &#39;dynamic_viscosity&#39;: 1.813e-05, &#39;specific_heat&#39;: 1002.8961443192019, &#39;heat_capacity&#39;: 1.401, &#39;thermal_conductivity&#39;: 0.02587, &#39;speed_of_sound&#39;: 343.35637592387417, &#39;Mach_number&#39;: 0, &#39;radius&#39;: 1, &#39;bulk-viscosity&#39;: 1.0878e-05}
+</pre></div>
+</div>
+</div>
+<div class="section" id="extract-the-wavenumbers">
+<h2>2. Extract the Wavenumbers<a class="headerlink" href="#extract-the-wavenumbers" title="Permalink to this headline">¶</a></h2>
+<p>We define a non-dimensional frequency from which we compute the maximum frequency for our decomposition.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omega_nondimensional</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="n">omega_nondimensional</span> <span class="o">*</span> <span class="n">td</span><span class="o">.</span><span class="n">speed_of_sound</span><span class="o">/</span><span class="n">radius</span>
+<span class="n">f_decomb</span> <span class="o">=</span> <span class="n">omega</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can conveniently compute the wavenumbers for an arbitrary set of modes by creating two arrays containing all
+combinations of <em>m</em> and <em>n</em>. In this example we compute the first 24 <em>m</em> modes and the first 10 <em>n</em> modes.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">nn</span><span class="p">,</span> <span class="n">mm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From the mode arrays we compute the wavenumbers in the left and in the right running direction. We can alter the
+direction by setting the <em>sign</em> parameter. The  <span class="math notranslate nohighlight">\(p_+\)</span> direction has the sign 1 and the <span class="math notranslate nohighlight">\(p_-\)</span> direction
+has the sign -1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k_left</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">get_wavenumber</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="n">nn</span><span class="p">,</span> <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">f_decomb</span><span class="p">)</span>
+<span class="n">k_right</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">get_wavenumber</span><span class="p">(</span><span class="n">mm</span><span class="p">,</span> <span class="n">nn</span><span class="p">,</span> <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">f_decomb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot">
+<h2>3. Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h2>
+<p>Finally, we can plot the real and the imaginary part of the wavenumbers on the m - n grid.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">text_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ha&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="s1">&#39;va&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="s1">&#39;family&#39;</span><span class="p">:</span> <span class="s1">&#39;sans-serif&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;fontweight&#39;</span><span class="p">:</span> <span class="s1">&#39;bold&#39;</span><span class="p">}</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">limit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">k_right</span><span class="p">)))</span>
+<span class="n">kimag_left</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">k_left</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;rainbow&quot;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="n">limit</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+<span class="n">kimag_right</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">k_right</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;rainbow&quot;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="n">limit</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;$Im(k_</span><span class="si">{mn}</span><span class="s2">)$, $\omega$ = &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">omega_nondimensional</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">kimag_left</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span><span class="s2">&quot;right running wave&quot;</span><span class="p">,</span><span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span>
+                   <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">),</span><span class="o">**</span><span class="n">text_params</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span><span class="s2">&quot;left running wave&quot;</span><span class="p">,</span><span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span>
+                   <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">),</span><span class="o">**</span><span class="n">text_params</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">limit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">k_right</span><span class="p">)))</span>
+<span class="n">kimag_left</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">k_left</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;rainbow&quot;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="n">limit</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+<span class="n">kimag_right</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">k_right</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;rainbow&quot;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="n">limit</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#666666&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span><span class="s2">&quot;right running wave&quot;</span><span class="p">,</span><span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span>
+                   <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">),</span><span class="o">**</span><span class="n">text_params</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span><span class="s2">&quot;left running wave&quot;</span><span class="p">,</span><span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span>
+                   <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">),</span><span class="o">**</span><span class="n">text_params</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;$Re(k_</span><span class="si">{mn}</span><span class="s2">)$, $\omega$ = &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">omega_nondimensional</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">kimag_left</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="$Im(k_{mn})$, $\omega$ = 20, $Re(k_{mn})$, $\omega$ = 20" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_RienstraCutOns_001.png" />
+<p>Additionally, we can compute the wavenumbers for a set of modes as a function of the frequency. Again, we create
+two arrays that contain the combinations of modes. Here, we compute only the <em>m</em> modes and set <em>n</em> to 0.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We also create an array for the dimensionless frequencies from 0.1 to 20 and allocate arrays for the left and right
+running wavenumbers.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omegas</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">k_left</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">omegas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">k_right</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">omegas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>We iterate through all the dimensionless frequencies and compute the wavenumbers for all modes.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">ii</span><span class="p">,</span><span class="n">omega_nondimensional</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">omegas</span><span class="p">):</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">omega_nondimensional</span> <span class="o">*</span> <span class="n">td</span><span class="o">.</span><span class="n">speed_of_sound</span> <span class="o">/</span> <span class="n">radius</span>
+    <span class="n">f_decomb</span> <span class="o">=</span> <span class="n">omega</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">k_left</span><span class="p">[:,</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">get_wavenumber</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="o">=</span><span class="n">f_decomb</span><span class="p">,</span><span class="n">sign</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">k_right</span><span class="p">[:,</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">get_wavenumber</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="o">=</span><span class="n">f_decomb</span><span class="p">,</span><span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Finally, we plot the results.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k_left</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">omegas</span><span class="p">,</span><span class="n">k_right</span><span class="p">[</span><span class="n">mode</span><span class="p">,:],</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">omegas</span><span class="p">,</span> <span class="n">k_left</span><span class="p">[</span><span class="n">mode</span><span class="p">,</span> <span class="p">:],</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;m = 0&quot;</span><span class="p">,</span><span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span>
+                   <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">),</span><span class="o">**</span><span class="n">text_params</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">omegas</span><span class="p">)</span><span class="o">*</span><span class="mf">0.95</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;m = &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">m</span><span class="p">)),</span>
+         <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">),</span><span class="o">**</span><span class="n">text_params</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">omegas</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">k_right</span><span class="p">)</span><span class="o">*</span><span class="mf">0.2</span><span class="p">,</span><span class="s2">&quot;cut-on right running&quot;</span><span class="p">,</span>
+         <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">),</span><span class="o">**</span><span class="n">text_params</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">omegas</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">k_left</span><span class="p">)</span><span class="o">*</span><span class="mf">0.2</span><span class="p">,</span><span class="s2">&quot;cut-on left running&quot;</span><span class="p">,</span>
+         <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span><span class="n">fc</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">),</span><span class="o">**</span><span class="n">text_params</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$\omega$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$Re(k_</span><span class="si">{m0}</span><span class="s2">)$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">omegas</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="plot RienstraCutOns" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_RienstraCutOns_002.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.815 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-rienstracutons-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/1af26e33ef505633c07b0ab52d143140/plot_RienstraCutOns.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_RienstraCutOns.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/bb804be3d838092a66896792a81b3b99/plot_RienstraCutOns.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_RienstraCutOns.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to compute wavenumbers and cut-ons</a><ul>
+<li><a class="reference internal" href="#initialization">1. Initialization</a></li>
+<li><a class="reference internal" href="#extract-the-wavenumbers">2. Extract the Wavenumbers</a></li>
+<li><a class="reference internal" href="#plot">3. Plot</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="plot_liner.html"
+                        title="previous chapter">The transmission loss (TL) along a duct liner</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="plot_comsolOrifice.html"
+                        title="next chapter">How to post-process simulation data</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/auto_examples/plot_RienstraCutOns.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plot_comsolOrifice.html" title="How to post-process simulation data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="plot_liner.html" title="The transmission loss (TL) along a duct liner"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to compute wavenumbers and cut-ons</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Stefan Sack.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

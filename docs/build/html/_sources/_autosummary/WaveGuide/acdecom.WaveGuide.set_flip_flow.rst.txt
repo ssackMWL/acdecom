@@ -1,0 +1,6 @@
+acdecom.WaveGuide.set\_flip\_flow
+=================================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.set_flip_flow

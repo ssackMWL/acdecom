@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>acdecom.WaveGuide.read_microphonefile &#8212; acdecom 20/06/12 documentation</title>
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="acdecom.WaveGuide.set_distance" href="acdecom.WaveGuide.set_distance.html" />
+    <link rel="prev" title="acdecom.WaveGuide.get_wavenumber" href="acdecom.WaveGuide.get_wavenumber.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.set_distance.html" title="acdecom.WaveGuide.set_distance"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.get_wavenumber.html" title="acdecom.WaveGuide.get_wavenumber"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../acdecom.WaveGuide.html" accesskey="U">acdecom.WaveGuide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">acdecom.WaveGuide.read_microphonefile</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="acdecom-waveguide-read-microphonefile">
+<h1>acdecom.WaveGuide.read_microphonefile<a class="headerlink" href="#acdecom-waveguide-read-microphonefile" title="Permalink to this headline">¶</a></h1>
+<dl class="py method">
+<dt id="acdecom.WaveGuide.read_microphonefile">
+<code class="sig-prename descclassname">WaveGuide.</code><code class="sig-name descname">read_microphonefile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">cylindrical_coordinates</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#acdecom.WaveGuide.read_microphonefile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a file that contains the microphone position. The dimensions are [m] or [deg].
+The file must have the following structure:</p>
+<blockquote>
+<div><ul>
+<li><p>For Circular duct:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>z1</p></td>
+<td><p>r1</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Phi\)</span> 1</p></td>
+</tr>
+<tr class="row-even"><td><p>z2</p></td>
+<td><p>r2</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Phi\)</span> 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>zm</p></td>
+<td><p>rm</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Phi\)</span> m</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><dl>
+<dt>For other ducts:</dt><dd><table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 71%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>z1</p></td>
+<td><p>x1</p></td>
+<td><p><span class="math notranslate nohighlight">\(y\)</span> m</p></td>
+</tr>
+<tr class="row-even"><td><p>z2</p></td>
+<td><p>x2</p></td>
+<td><p><span class="math notranslate nohighlight">\(y\)</span> m</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>zm</p></td>
+<td><p>xm</p></td>
+<td><p><span class="math notranslate nohighlight">\(y\)</span> m</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – Full Path to the file that contains the microphone data.</p></li>
+<li><p><strong>cylindrical_coordinates</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <em>True</em> the circumferential position is converted from deg. to radians.</p></li>
+<li><p><strong>kwargs</strong> (<em>additional parameters</em>) – Will be passed to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html">numpy.loadtxt</a>.
+Please refer to the numpy documentation for information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="acdecom.WaveGuide.get_wavenumber.html"
+                        title="previous chapter">acdecom.WaveGuide.get_wavenumber</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="acdecom.WaveGuide.set_distance.html"
+                        title="next chapter">acdecom.WaveGuide.set_distance</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/_autosummary/WaveGuide/acdecom.WaveGuide.read_microphonefile.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.set_distance.html" title="acdecom.WaveGuide.set_distance"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.get_wavenumber.html" title="acdecom.WaveGuide.get_wavenumber"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../acdecom.WaveGuide.html" >acdecom.WaveGuide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">acdecom.WaveGuide.read_microphonefile</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Stefan Sack.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

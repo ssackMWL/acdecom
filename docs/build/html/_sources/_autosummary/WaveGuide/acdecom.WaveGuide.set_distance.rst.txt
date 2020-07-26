@@ -1,0 +1,6 @@
+acdecom.WaveGuide.set\_distance
+===============================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.set_distance

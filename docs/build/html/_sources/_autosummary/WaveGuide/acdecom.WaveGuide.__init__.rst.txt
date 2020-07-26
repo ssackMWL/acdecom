@@ -1,0 +1,6 @@
+acdecom.WaveGuide.\_\_init\_\_
+==============================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.__init__

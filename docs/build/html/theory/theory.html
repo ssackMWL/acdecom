@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theory and Definitions &#8212; acdecom 20/06/12 documentation</title>
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="../auto_examples/index.html" />
+    <link rel="prev" title="acdecom - acoustic mode decomposition in flow ducts" href="../index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../auto_examples/index.html" title="Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="acdecom - acoustic mode decomposition in flow ducts"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Theory and Definitions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="theory-and-definitions">
+<h1>Theory and Definitions<a class="headerlink" href="#theory-and-definitions" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The full theory of acoustic induct sound decompositions can be found in
+<a class="reference external" href="https://www.ingentaconnect.com/content/dav/aaua/2016/00000102/00000005/art00008">this study</a>.</p>
+</div>
+<div class="section" id="problem-description">
+<h2>Problem Description<a class="headerlink" href="#problem-description" title="Permalink to this headline">¶</a></h2>
+<p>Fluid-machinery in ducts such as HVAC-fans, compressors, turbines, and jet engines, create noise of a complex nature.
+Other components, such as mufflers, silencers and liners, are developed to reduce that noise. In order to match the
+design of sources and absorbers, it is often necessary to quantify their acoustic behaviour.</p>
+<p>The sound waves inside a duct propagate towards its ends, where they are partially released into the environment and
+partially reflected back into the duct. The extent of this reflection depends on many factors, but mostly on the duct
+terminations. Direct measurements of the acoustic pressure along a duct capture a mix of emitted and reflected waves.
+This is often unwanted as the terminations in applications and laboratory tests differ. A common approach is to split
+the sound field into its upstream and downstream propagating <em>acoustic modes</em>, which removes the dependency of the
+test-results on the internal reflection of the test setup. This procedure is called <em>acoustic mode decomposition</em></p>
+<a class="reference internal image-reference" href="../_images/domain.png"><img alt="../_images/domain.png" src="../_images/domain.png" style="width: 800px;" /></a>
+<p>Therefore, the pressure is sampled along the duct at several positions upstream (<em>US</em>) and
+downstream (<em>DS</em>) of the test object. If the pressure levels inside the duct are sufficiently low (usually much less
+than 130-150 dB) to cause only linear acoustic waves, and if the sound fields are stationary, we can designate  the
+sound field at any position of the duct as a superposition of waves that travel towards the test-object (<em>- waves</em>) and
+waves that travel away from the test object (<em>+ waves</em>).</p>
+<p>The waves can have different shapes in a duct cross section, and we call each unique shape a <em>duct mode</em>. In
+general, for high frequencies more modes can be cut-on and, therefore, propagate. If we measure the pressure along the duct, we can describe
+its value at each positions with the following equations</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The sound fields are investigated in the frequency domain and only one frequency is considered at a time.
+This operation requires that the sound fields are linear and time-invariant. This is true for many relevant cases.</p>
+</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}p_1=\sum_{i=1}^N p_{i+}~\Psi_{i+}(x_1,y_1)~T_{i+}(z_1)+p_{i-}~\Psi_{i-}(x_1,y_1)~T_{i-}(z_1)\\
+p_2=\sum_{i=1}^N p_{i+}~\Psi_{i+}(x_2,y_2)~T_{i+}(z_2)+p_{i-}~\Psi_{i-}(x_2,y_2)~T_{i-}(z_2)\\
+\cdots\\
+p_n=\sum_{i=1}^N p_{i+}~\Psi_{i+}(x_n,y_n)~T_{i+}(z_n)+p_{i-}~\Psi_{i-}(x_n,y_n)~T_{i-}(z_n).\end{split}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(N\)</span> is the maximum number of modes that propagate,  <span class="math notranslate nohighlight">\(n\)</span> is the number of pressure probes,
+<span class="math notranslate nohighlight">\(p_{i\pm}\)</span> are the complex pressure amplitudes of the i-th mode. By ‘complex’ we mean, that they have an amplitude and a
+phase. <span class="math notranslate nohighlight">\(\Psi_{i\pm}(x,y)\)</span> is the mode shape within a cross section and <span class="math notranslate nohighlight">\(T_{i\pm}(z)\)</span> describes the
+propagation of the mode, including its velocity and attenuation.</p>
+<p>The set of equations can be reformulated into a matrix-vector notation</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{p = M p_\pm},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> is a vector containing all measured pressures along the duct, <span class="math notranslate nohighlight">\(\mathbf{p_\pm}\)</span> is a
+vector that contains the complex amplitudes of the propagating modes and <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is the <em>modal matrix</em> that
+contains the information about the mode shapes, mode propagation, and mode attenuation.</p>
+<p>If we measure the sound field at several points, we can solve for the complex pressure amplitudes by inverting the modal
+matrix</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{p_\pm = M^{-1} p} .\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to solve the complex modes, the modal matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> needs to be well-conditioned. This
+requires measuring at least <span class="math notranslate nohighlight">\(2 \times N\)</span> positions and providing sufficient microphone spacing.</p>
+</div>
+</div>
+<div class="section" id="constructing-the-modal-matrix">
+<h2>Constructing the Modal Matrix<a class="headerlink" href="#constructing-the-modal-matrix" title="Permalink to this headline">¶</a></h2>
+<p>Constructing the modal matrix is the key functionality of this module. Its elements are formed by the mode shapes
+<span class="math notranslate nohighlight">\(\Psi_{i\pm}(x,y)\)</span> and the mode propagation <span class="math notranslate nohighlight">\(T_{i\pm}(z)\)</span>. It has the dimension <span class="math notranslate nohighlight">\(n \times 2N\)</span>.</p>
+<p>The module automates most of the steps needed to create the modal matrix once sufficient information is provided. On
+an application level, we are only required to perform the object initialization and set the microphone positions; then
+we are ready to decompose sound fields. The algorithms in the module construct the modal matrix.</p>
+<div class="section" id="object-initialization">
+<h3>Object Initialization<a class="headerlink" href="#object-initialization" title="Permalink to this headline">¶</a></h3>
+<p>The initialization of a <a class="reference internal" href="../_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveGuide</span></code></a> object only requires a few parameters. However, the <em>WaveGuide</em> can be modified
+by passing optional arguments to realize specific test conditions.
+In the simplest case, we can create a circular duct with a radius of 0.01 m by calling</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Initiate a Circular Waveguide</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">acdecom</span> <span class="kn">import</span> <span class="n">WaveGuide</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># m</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="n">WaveGuide</span><span class="p">(</span><span class="n">dimensions</span> <span class="o">=</span> <span class="p">(</span><span class="n">radius</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+<p>If we want to change the <em>cross section</em>, the <em>attenuation model</em>, <em>temperature</em>, and the <em>Mach-number</em>,
+we can pass arguments to the initialization.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Initiate a Rectangular Waveguide</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">domain</span> <span class="kn">import</span> <span class="n">WaveGuide</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># m</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># m</span>
+<span class="n">temp</span> <span class="o">=</span> <span class="mi">300</span>  <span class="c1"># Kelvin</span>
+<span class="n">Machnumber</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="n">rectangular_domain</span> <span class="o">=</span> <span class="n">WaveGuide</span><span class="p">(</span><span class="n">dimensions</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">),</span> <span class="n">cross_section</span><span class="o">=</span><span class="s2">&quot;rectangular&quot;</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="s2">&quot;stinson&quot;</span><span class="p">,</span>
+                                <span class="n">M</span><span class="o">=</span><span class="n">Machnumber</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="n">temp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A full list of arguments can be found in the class documentation of the <a class="reference internal" href="../_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveGuide</span></code></a> object.</p>
+</div>
+</div>
+<div class="section" id="microphone-position">
+<h3>Microphone Position<a class="headerlink" href="#microphone-position" title="Permalink to this headline">¶</a></h3>
+<p>A microphone has three spatial coordinates. Those are cartesian (x, y, z). However, for ducts with a
+<em>circular</em> cross section, the coordinates are in the cylindrical coordinates (r, <span class="math notranslate nohighlight">\(\phi\)</span>, z).
+The microphone positions can be passed in two ways.</p>
+<p>The <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.set_microphone_positions.html#acdecom.WaveGuide.set_microphone_positions" title="acdecom.WaveGuide.set_microphone_positions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.set_microphone_positions()</span></code></a> method can be used to pass lists of positions directly to the object.</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Microphone Positions for a Rectangular Waveguide</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span>  <span class="c1"># m</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>  <span class="c1"># m</span>
+<span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>  <span class="c1"># m</span>
+
+<span class="n">rectangular_domain</span><span class="o">.</span><span class="n">set_microphone_positions</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Microphone Positions for a Circular Waveguide</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span>  <span class="c1"># m</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">45</span><span class="p">]</span>  <span class="c1"># deg</span>
+<span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>  <span class="c1"># m</span>
+
+<span class="n">circular_domain</span><span class="o">.</span><span class="n">set_microphone_positions</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For a circular waveguide, the microphone position is in cylindrical coordinates. The circular position is defined
+in <strong>degree</strong> (not in radians).</p>
+</div>
+<p>The <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.read_microphonefile.html#acdecom.WaveGuide.read_microphonefile" title="acdecom.WaveGuide.read_microphonefile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.read_microphonefile()</span></code></a> method can be used to read a file that contains the microphone positions. The
+microphone file must have three columns, representing the three coordinates (either cartesian or cylindrical).</p>
+<table class="colwidths-given docutils align-default" id="id6">
+<caption><span class="caption-text">microphones.txt</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>z [m]</p></th>
+<th class="head"><p>r [m]</p></th>
+<th class="head"><p>phi [deg]</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0.0</p></td>
+<td><p>0.05</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.01</p></td>
+<td><p>0.05</p></td>
+<td><p>90</p></td>
+</tr>
+<tr class="row-even"><td><p>0.3</p></td>
+<td><p>0.05</p></td>
+<td><p>45</p></td>
+</tr>
+</tbody>
+</table>
+<p>We can read a file of this structure with any number of microphone positions. The method makes use of
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html">numpy.loadtxt</a> function, and we can pass all
+keywords that are accepted by this function to describe the file format.</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Read Microphone File</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">circularDomain</span><span class="o">.</span><span class="n">read_microphonefile</span><span class="p">(</span><span class="s2">&quot;microphones.txt&quot;</span><span class="p">,</span> <span class="n">cylindrical_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                    <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If our file has header information, we need to skip those lines using the <em>skiprows</em> argument.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If we want to change the reference cross section, we can use the method <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.set_distance.html#acdecom.WaveGuide.set_distance" title="acdecom.WaveGuide.set_distance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.set_distance()</span></code></a>. This will
+shift all microphones, which is a convenient way to adjust the reference cross section of the decomposition. It is
+good practice to first define all microphone positions relative to the first microphone and to move the reference
+cross section afterward.</p>
+</div>
+</div>
+<div class="section" id="decomposition">
+<h3>Decomposition<a class="headerlink" href="#decomposition" title="Permalink to this headline">¶</a></h3>
+<p>After the object is initiated and the microphone positions are defined, sound fields can be decomposed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the module prepares the modal matrix based on the input, the user can call all functions that are involved
+to extract the output if needed. That can be useful, for example, if we are only interested in the wavenumbers, but
+not in the decomposition.</p>
+</div>
+<p>For the decomposition, we can use the method <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.decompose.html#acdecom.WaveGuide.decompose" title="acdecom.WaveGuide.decompose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.decompose()</span></code></a>. The method requires a
+numpy.ndArray as input. The
+information for a test with three microphones upstream and three microphones downstream would have at least the
+following format:</p>
+<table class="colwidths-given docutils align-default" id="id8">
+<caption><span class="caption-text">measurement.txt</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>frequency [Hz]</p></th>
+<th class="head"><p>Mic1 US</p></th>
+<th class="head"><p>Mic2 US</p></th>
+<th class="head"><p>Mic3 US</p></th>
+<th class="head"><p>Mic1 DS</p></th>
+<th class="head"><p>Mic2 DS</p></th>
+<th class="head"><p>Mic3 DS</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>f1</p></td>
+<td><p>p1 US</p></td>
+<td><p>p2 US</p></td>
+<td><p>p3 US</p></td>
+<td><p>p1 DS</p></td>
+<td><p>p2 DS</p></td>
+<td><p>p3 DS</p></td>
+</tr>
+</tbody>
+</table>
+<p>If the measurement is stored in a text file, we can load it to a numpy.ndArray with the
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html">numpy.loadtxt</a> function. In order to decompose
+the fields, we need to provide the decomposition method the columns wherein we have stored the frequency and the
+pressure data</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Decompose Sound Field</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pressure</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s2">&quot;measurement.txt&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">f_col</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">mic_col_us</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># for the upstream microphone data</span>
+<span class="n">mic_col_ds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>  <span class="c1"># for the upstream microphone data</span>
+
+<span class="n">decomp_ds</span><span class="p">,</span> <span class="n">headers_ds</span> <span class="o">=</span> <span class="n">circular_domain</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">f_col</span><span class="p">,</span> <span class="n">mic_col_ds</span><span class="p">)</span>
+
+<span class="n">circular_domain</span><span class="o">.</span><span class="n">set_flip_flow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># changes the flow direction for the upstream component</span>
+<span class="n">decomp_us</span><span class="p">,</span> <span class="n">headers_us</span> <span class="o">=</span> <span class="n">circular_domain</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">f_col</span><span class="p">,</span> <span class="n">mic_col_us</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The upstream and the downstream side of a test duct need to be decomposed separately. In this example, we used
+the same object and flipped the Mach-number for the upstream side. If the Mach-number or the microphone positions
+are different on the upstream and the downstream side, two objects should be created.</p>
+</div>
+</div>
+</div>
+<div class="section" id="internal-procedure-to-compute-the-modal-matrix">
+<h2>Internal Procedure to Compute the Modal Matrix<a class="headerlink" href="#internal-procedure-to-compute-the-modal-matrix" title="Permalink to this headline">¶</a></h2>
+<p>Based on the microphone positions, the duct cross section, and the attenuation model the modal matrix is set up
+automatically when a decomposition is initialized. However, this only works if we use the preset models; when we
+implement other duct cross sections or new attenuation models, we need to interfere with the
+standard procedure.</p>
+<p>The most important steps involve computations of the mode shapes <span class="math notranslate nohighlight">\(\Psi_{i\pm}(x,y)\)</span> and the mode propagation
+<span class="math notranslate nohighlight">\(T_{i\pm}(z)\)</span> for each mode and each microphone position.</p>
+<p>The mode shapes <span class="math notranslate nohighlight">\(\Psi_{i\pm}(x,y)\)</span> are computed with the <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.get_psi.html#acdecom.WaveGuide.get_psi" title="acdecom.WaveGuide.get_psi"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_psi()</span></code></a> method. This method computes
+the mode shapes based on the cross section and the mode order and normalizes the modes to be ortho-normal, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[\int_{A} \psi_{mn} \psi_{m'n'} dA = \delta_{mm'} \delta_{nn'}\]</div>
+<p>and <span class="math notranslate nohighlight">\(\delta\)</span> is the Kronecker delta. The normalization factor is computed in <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.get_c.html#acdecom.WaveGuide.get_c" title="acdecom.WaveGuide.get_c"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_c()</span></code></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The function <code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_C()</span></code> and <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.get_psi.html#acdecom.WaveGuide.get_psi" title="acdecom.WaveGuide.get_psi"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_psi()</span></code></a> are only place-holders. They are overwritten
+by the specific pre-defined functions when a <em>WaveGuide</em>  is initialized. If we want to define our own functions,
+we can inherit from the <a class="reference internal" href="../_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveGuide</span></code></a> class and overwrite the functions as shown in the examples. We can
+also pass a customized function as an optional argument as described in the class documentation for the
+<a class="reference internal" href="../_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveGuide</span></code></a> class.</p>
+</div>
+<p>The wave propagation <cite>T_{ipm}(z)</cite> is computed with the <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.get_T.html#acdecom.WaveGuide.get_T" title="acdecom.WaveGuide.get_T"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_T()</span></code></a> method.</p>
+<div class="math notranslate nohighlight">
+\[T{mn\pm} = e^{-\mathbf{i}k_{mn\pm} z}\]</div>
+<p>and  <span class="math notranslate nohighlight">\(k_{mn\pm}\)</span> is the dissipative wavenumber. The wavenumber is computed with the
+<a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.get_wavenumber.html#acdecom.WaveGuide.get_wavenumber" title="acdecom.WaveGuide.get_wavenumber"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_wavenumber()</span></code></a> method.</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[k_{mn\pm} = \pm K_0 \frac{\omega}{c} \frac{\sqrt{1-(\kappa_{mn}c/\omega)^2(1-M)}\mp M}{1-M^2}\]</div>
+</div></blockquote>
+<p>Here, <span class="math notranslate nohighlight">\(K_0\)</span> is the dissipation factor (see <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.get_K0.html#acdecom.WaveGuide.get_K0" title="acdecom.WaveGuide.get_K0"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_K0()</span></code></a> )
+<span class="math notranslate nohighlight">\(\omega\)</span> is the angular frequency, <span class="math notranslate nohighlight">\(c\)</span> is the speed of sound,
+<span class="math notranslate nohighlight">\(\kappa_{mn}\)</span> is the eigenvalue (see <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.get_eigenvalue.html#acdecom.WaveGuide.get_eigenvalue" title="acdecom.WaveGuide.get_eigenvalue"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_eigenvalue()</span></code></a> ), and
+<span class="math notranslate nohighlight">\(M\)</span> is the Mach_number.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If we want to define our wavenumber model, we can inherit from <a class="reference internal" href="../_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveGuide</span></code></a> class and overwrite the
+functions as shown in the examples. We can also pass a customized function as an optional argument as described in
+the class documentation for the <a class="reference internal" href="../_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveGuide</span></code></a> class.</p>
+</div>
+<p>More information on the implementation can be found in the class reference <a class="reference internal" href="../_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveGuide</span></code></a> . The source code that
+shows the full implementation of the mode decomposition can be found on acdecom’s
+<a class="reference external" href="https://github.com/ssackMWL/acdecom">GitHub Page</a>.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Theory and Definitions</a><ul>
+<li><a class="reference internal" href="#problem-description">Problem Description</a></li>
+<li><a class="reference internal" href="#constructing-the-modal-matrix">Constructing the Modal Matrix</a><ul>
+<li><a class="reference internal" href="#object-initialization">Object Initialization</a></li>
+<li><a class="reference internal" href="#microphone-position">Microphone Position</a></li>
+<li><a class="reference internal" href="#decomposition">Decomposition</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#internal-procedure-to-compute-the-modal-matrix">Internal Procedure to Compute the Modal Matrix</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">acdecom - acoustic mode decomposition in flow ducts</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../auto_examples/index.html"
+                        title="next chapter">Examples</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/theory/theory.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../auto_examples/index.html" title="Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="acdecom - acoustic mode decomposition in flow ducts"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Theory and Definitions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Stefan Sack.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

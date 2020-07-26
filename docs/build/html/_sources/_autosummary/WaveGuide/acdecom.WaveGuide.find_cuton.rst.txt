@@ -1,0 +1,6 @@
+acdecom.WaveGuide.find\_cuton
+=============================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.find_cuton

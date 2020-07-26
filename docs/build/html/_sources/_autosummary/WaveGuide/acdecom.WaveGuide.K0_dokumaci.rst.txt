@@ -1,0 +1,6 @@
+acdecom.WaveGuide.K0\_dokumaci
+==============================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.K0_dokumaci

@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to post-process simulation data &#8212; acdecom 20/06/12 documentation</title>
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="acdecom.WaveGuide" href="../_autosummary/acdecom.WaveGuide.html" />
+    <link rel="prev" title="How to compute wavenumbers and cut-ons" href="plot_RienstraCutOns.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../_autosummary/acdecom.WaveGuide.html" title="acdecom.WaveGuide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="plot_RienstraCutOns.html" title="How to compute wavenumbers and cut-ons"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to post-process simulation data</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-comsolorifice-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="how-to-post-process-simulation-data">
+<span id="sphx-glr-auto-examples-plot-comsolorifice-py"></span><h1>How to post-process simulation data<a class="headerlink" href="#how-to-post-process-simulation-data" title="Permalink to this headline">¶</a></h1>
+<p>In this example we compute the scattering through an orifice plate in a circular duct with flow. The data is extracted
+from two Comsol Multiphysics simulations with a similar setup as in
+<cite>this study &lt;https://www.sciencedirect.com/science/article/abs/pii/S0022460X17306752?via%3Dihub&gt;</cite>.
+The geometry is the same as in <cite>this study &lt;https://www.sciencedirect.com/science/article/abs/pii/S0022460X09002995&gt;</cite>.</p>
+<a class="reference internal image-reference" href="auto_examples\orifice.png"><img alt="auto_examples\orifice.png" src="auto_examples\orifice.png" style="width: 800px;" /></a>
+<div class="section" id="initialization">
+<h2>1. Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
+<p>First, we import the packages needed for this example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">acdecom</span>
+</pre></div>
+</div>
+<p>The orifice is mounted inside a circular test duct with a radius of 15 mm.
+The highest frequency of interest is 4000 Hz. The bulk Mach-number is 0.042 and the temperature is 295 Kelvin.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">section</span> <span class="o">=</span> <span class="s2">&quot;circular&quot;</span>
+<span class="n">r</span> <span class="o">=</span> <span class="mf">0.015</span>  <span class="c1"># m</span>
+<span class="n">f_max</span> <span class="o">=</span> <span class="mi">4000</span>  <span class="c1"># Hz</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mf">0.042</span>
+<span class="n">t</span> <span class="o">=</span> <span class="mi">295</span>  <span class="c1"># Kelvin</span>
+</pre></div>
+</div>
+<p>The graphic in the beginning of this examples shows a snapshot of the pressure field from the simulation.
+The “bubbles” downstream from the orifice plate are the vortex shed by the acoustic field. When we setup the
+decomposition domain, we want to be outside the shedding region, to avoid detecting <em>artificial modes</em> that do not
+belong to the acoustic field. Therefore, we will only use pressure values that are at least 10 duct diameters away
+from the orifice.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="mf">20.</span><span class="o">*</span><span class="n">r</span>  <span class="c1"># m</span>
+</pre></div>
+</div>
+<p>To analyze the measurement data, we create objects for the US and the DS test ducts.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">td_US</span> <span class="o">=</span> <span class="n">acdecom</span><span class="o">.</span><span class="n">WaveGuide</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="p">),</span> <span class="n">cross_section</span><span class="o">=</span><span class="n">section</span><span class="p">,</span> <span class="n">f_max</span><span class="o">=</span><span class="n">f_max</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="s2">&quot;no&quot;</span><span class="p">,</span>
+                          <span class="n">M</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">flip_flow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">td_DS</span> <span class="o">=</span> <span class="n">acdecom</span><span class="o">.</span><span class="n">WaveGuide</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="p">),</span> <span class="n">cross_section</span><span class="o">=</span><span class="n">section</span><span class="p">,</span> <span class="n">f_max</span><span class="o">=</span><span class="n">f_max</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="s2">&quot;no&quot;</span><span class="p">,</span>
+                          <span class="n">M</span><span class="o">=</span><span class="n">M</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The standard flow direction is in <span class="math notranslate nohighlight">\(P_+\)</span> direction. On the inlet side, the Mach-number therefore must be
+either set negative or the argument <em>flipFlow</em> must be set to <em>True</em>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We use <em>no</em> dissipation model. In the numerical simulation, we have turned off the boundary layer effects and we
+do not need to take them into account for our post-processing.</p>
+</div>
+</div>
+<div class="section" id="data-preparation">
+<h2>2. Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">¶</a></h2>
+<p>We will post-process the direct data output using Comsol Multiphysics. The solution is two-dimensional and
+axi-symmetric. Using Comsol, we exported the two files <em>comsolOrificeCase1.txt</em> and <em>comsolOrificeCase2.txt</em>. They contain
+the same geometry. However, the orifice was either excited with an acoustic plane wave from the upstream direction
+or from the downstream direction. We will post-process both files in order to extract the sound scattering in both
+directions.</p>
+<p>First, we print the header of the files to get a cleaner view of their structure.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/comsolOrifice1.txt&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pressurefile</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pressurefile</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>% Model:              orjfjceWhjstljng2D.mph
+
+% Versjon:            COMSOL 5.5.0.306
+
+% Date:               Jul 23 2020, 09:21
+
+% Djmensjon:          2
+
+% Nodes:              10000
+
+% Expressjons:        71
+
+% Descrjptjon:        Pressure
+
+% Length unjt:        m
+
+% r                       z                        p2 (Pa) @ freq=500                                p2 (Pa) @ freq=550                                p2 (Pa) @ freq=600                                p2 (Pa) @ freq=650                                p2 (Pa) @ freq=700                                p2 (Pa) @ freq=750                                p2 (Pa) @ freq=800                                p2 (Pa) @ freq=850                                p2 (Pa) @ freq=900                                p2 (Pa) @ freq=950                                p2 (Pa) @ freq=1000                               p2 (Pa) @ freq=1050                               p2 (Pa) @ freq=1100                               p2 (Pa) @ freq=1150                               p2 (Pa) @ freq=1200                               p2 (Pa) @ freq=1250                               p2 (Pa) @ freq=1300                               p2 (Pa) @ freq=1350                               p2 (Pa) @ freq=1400                               p2 (Pa) @ freq=1450                               p2 (Pa) @ freq=1500                               p2 (Pa) @ freq=1550                               p2 (Pa) @ freq=1600                               p2 (Pa) @ freq=1650                               p2 (Pa) @ freq=1700                               p2 (Pa) @ freq=1750                               p2 (Pa) @ freq=1800                               p2 (Pa) @ freq=1850                               p2 (Pa) @ freq=1900                               p2 (Pa) @ freq=1950                               p2 (Pa) @ freq=2000                               p2 (Pa) @ freq=2050                               p2 (Pa) @ freq=2100                               p2 (Pa) @ freq=2150                               p2 (Pa) @ freq=2200                               p2 (Pa) @ freq=2250                               p2 (Pa) @ freq=2300                               p2 (Pa) @ freq=2350                               p2 (Pa) @ freq=2400                               p2 (Pa) @ freq=2450                               p2 (Pa) @ freq=2500                               p2 (Pa) @ freq=2550                               p2 (Pa) @ freq=2600                               p2 (Pa) @ freq=2650                               p2 (Pa) @ freq=2700                               p2 (Pa) @ freq=2750                               p2 (Pa) @ freq=2800                               p2 (Pa) @ freq=2850                               p2 (Pa) @ freq=2900                               p2 (Pa) @ freq=2950                               p2 (Pa) @ freq=3000                               p2 (Pa) @ freq=3050                               p2 (Pa) @ freq=3100                               p2 (Pa) @ freq=3150                               p2 (Pa) @ freq=3200                               p2 (Pa) @ freq=3250                               p2 (Pa) @ freq=3300                               p2 (Pa) @ freq=3350                               p2 (Pa) @ freq=3400                               p2 (Pa) @ freq=3450                               p2 (Pa) @ freq=3500                               p2 (Pa) @ freq=3550                               p2 (Pa) @ freq=3600                               p2 (Pa) @ freq=3650                               p2 (Pa) @ freq=3700                               p2 (Pa) @ freq=3750                               p2 (Pa) @ freq=3800                               p2 (Pa) @ freq=3850                               p2 (Pa) @ freq=3900                               p2 (Pa) @ freq=3950                               p2 (Pa) @ freq=4000
+
+7.500000000000002E-4      -0.59895045              -6.594015731195159E-4-9.964393396585407E-4j       -0.0011860537981138028+2.0822981814437445E-4j     -2.812573635939459E-4+0.0011749602856567277j      9.65163291498519E-4+7.295779500173048E-4j         0.0010579064704968448-5.915102194563302E-4j       -1.1299633810741019E-4-0.0012110236740786606j     -0.0011644015797601338-3.8728480818294044E-4j     -8.210587933093777E-4+9.209466744689457E-4j       5.180658103629975E-4+0.0011268455748456206j       0.0012409686455777142-3.272963654214609E-5j       4.740400915810269E-4-0.0011390373155900377j       -8.450716377997362E-4-8.995013121466687E-4j       -0.001169599847273644+4.0110425814857635E-4j      -1.3039831303748967E-4+0.0012465289850809096j     0.0010961551517094925+6.33386654213946E-4j        0.0010449437044638252-7.41766012782377E-4j        -2.3672338342449196E-4-0.0012808716360936038j     -0.0012987480945725624-3.454406262477366E-4j      -9.227312833426118E-4+0.0010964143515957135j      6.862927003256785E-4+0.0013871489725009168j       0.0016607944827237197-1.295756102817592E-4j       4.919128462650932E-4-0.00169648915713534j         -0.0014688616953822992-0.0010823016057667663j     -0.001568971916333237+0.00100217299216616j        3.7564168773138423E-4+0.0018767549272077574j      0.0019516330154208338+3.255542912689751E-4j       9.857703509767491E-4-0.001785248765610653j        -0.001371365248556543-0.0015055457972722754j      -0.0018276254989431557+7.696057665401723E-4j      6.550840143500225E-5+0.0019071981064098945j       0.0017413207893079527+6.364522425065958E-4j       0.0012280725339732749-0.0013566148788370853j      -8.015001573148758E-4-0.0016254122041068062j      -0.0017799442549510831+1.5785775219420768E-4j     -4.8454594201322975E-4+0.0016792859949273694j     0.0013495732542571244+0.001029970253953009j       0.001405996254230656-8.452371419258992E-4j        -2.5203561266966864E-4-0.001567797361693215j      -0.0014983420558976558-3.340089694426043E-4j      -8.257257002655388E-4+0.0012154454801489233j      7.712479784668012E-4+0.00115740452476719j         0.0012876952843918889-2.4592391686245347E-4j      2.742755753953378E-4-0.0012050110194263088j       -9.348915082832261E-4-7.09317490721921E-4j        -9.93247241574712E-4+5.319373712666111E-4j        6.915017202975234E-5+0.0010874313485564335j       9.857681005918568E-4+3.752915489932123E-4j        7.275117798349058E-4-7.167475285822072E-4j        -3.3367704998420904E-4-9.310611528533997E-4j      -9.572825706231807E-4-9.228772847174834E-5j       -4.847697719494012E-4+8.071131767974492E-4j       5.121672883921741E-4+7.76492695449235E-4j         9.179860936588964E-4-1.284257113454432E-4j        2.75136841222777E-4-8.86756471068437E-4j          -6.916919435819609E-4-6.272952084798296E-4j       -8.659481817208404E-4+3.6987286708238824E-4j      -2.042958072472771E-5+9.489871539630312E-4j       8.620807973518022E-4+4.1000280423645236E-4j       7.297379831001061E-4-6.202347678876438E-4j        -2.6537801623804935E-4-9.232939138473764E-4j      -9.554864208060885E-4-1.410769577346627E-4j       -5.294939363672612E-4+8.1919862519288E-4j         5.371274837476116E-4+8.331122667556481E-4j        9.980645644894418E-4-1.5671397363416304E-4j       2.586716091031291E-4-9.948264845250757E-4j        -8.225210499320335E-4-6.390812021337053E-4j       -9.198072939928214E-4+5.099500924965665E-4j       1.0861720927420949E-4+0.001051845546824562j       0.0010120857110790396+3.143191525288762E-4j       6.875837007028902E-4-8.059670838888746E-4j        -4.671443879336398E-4-9.475783524930404E-4j
+
+0.0022500000000000003     -0.59895045              -6.598115227077373E-4-9.966036279599882E-4j       -0.001186282718359856+2.0866397903526702E-4j      -2.8111675933929363E-4+0.0011751987633198313j     9.652398183496232E-4+7.291329745029828E-4j        0.001057923729561758-5.912473327832849E-4j        -1.1326562504414308E-4-0.001211984191634732j      -0.0011653792383793929-3.868434198036737E-4j      -8.238066406174163E-4+9.218457046765307E-4j       5.201400917075564E-4+0.0011263736961986612j       0.0012381928192308606-3.0203811357715177E-5j      4.725440742955169E-4-0.0011381783230260728j       -8.440197961507028E-4-8.98211707781202E-4j        -0.0011704441414358332+3.9915894765788043E-4j     -1.2447948092705977E-4+0.0012431724035378059j     0.0010941192470542518+6.332820372351979E-4j       0.0010450328454385581-7.39583078427309E-4j        -2.3277848835822907E-4-0.0012845399824699616j     -0.0013034745926918823-3.521620533863789E-4j      -9.254949007485222E-4+0.001095703319259605j       6.85619859634462E-4+0.0013902329999068749j        0.001664168514639363-1.2866300962543247E-4j       4.931251526764727E-4-0.0017001298470275474j       -0.0014726758946456658-0.0010838771234689733j     -0.0015710317224750352+0.0010060500868684095j     3.7951733116016467E-4+0.0018793774529327807j      0.0019548210214740064+3.217641649940683E-4j       9.821488423463016E-4-0.0017888990613899882j       -0.0013752913594157722-0.0015023024663686048j     -0.001824993783673856+7.736873527617381E-4j       6.965138246314807E-5+0.001905357699627487j        0.001740344689598924+6.323291627693415E-4j        0.0012240891908249973-0.0013564641818033009j      -8.020846770305993E-4-0.0016217373396053914j      -0.0017767433088535477+1.590587263955981E-4j      -4.828565683612734E-4+0.001676694781004929j       0.001347668543045332+0.0010279374885355666j       0.0014037664128551926-8.440412408293864E-4j       -2.515063082365174E-4-0.0015655089705026788j      -0.001496127636736117-3.3396479775920545E-4j      -8.25225552293132E-4+0.0012134217677317572j       7.694992985756365E-4+0.0011565658802350249j       0.0012866293333335219-2.444889009042483E-4j       2.753948670858984E-4-0.001203815066077736j        -9.336367086660469E-4-7.101497966353269E-4j       -9.93843423941002E-4+5.30671498265087E-4j         6.790079491545605E-5+0.001087846790556794j        9.86045169783435E-4+3.765149082217435E-4j         7.287156555458019E-4-7.169101458836145E-4j        -3.3372744919464884E-4-9.322578087965604E-4j      -9.584832543674161E-4-9.236647436104054E-5j       -4.850057752778102E-4+8.083182216298214E-4j       5.133614902732322E-4+7.769177494798084E-4j        9.186235670945579E-4-1.2957622500132352E-4j       2.7407994082416997E-4-8.876143318356613E-4j       -6.92758352741272E-4-6.263898525091252E-4j        -8.65249732227945E-4+3.711114876052003E-4j        -1.9079356364642515E-5+9.485396673479142E-4j      8.619095645174047E-4+4.086185353649782E-4j        7.284043167159529E-4-6.20339701031345E-4j         -2.6573130198694647E-4-9.220899774393541E-4j      -9.544752497635772E-4-1.4053002986854214E-4j      -5.288276006638048E-4+8.184181638180472E-4j       5.365840898822465E-4+8.324108363466979E-4j        9.974122222583238E-4-1.5638317717412602E-4j       2.5883947790036606E-4-9.94292816627131E-4j        -8.221497702184529E-4-6.391541867643751E-4j       -9.198623231818279E-4+5.097527154440146E-4j       1.0857274989180938E-4+0.0010519562582322634j      0.0010123109841390409+3.142604573046745E-4j       6.874917145292474E-4-8.063419543968825E-4j        -4.67674467303052E-4-9.475314950079873E-4j
+</pre></div>
+</div>
+<p>There are a few header lines starting with <em>%</em>, followed by the pressure data for different frequencies.
+The first and second columns are the r and z coordinates of the grid points. The remaining columns hold the pressure
+at those positions for different frequencies. The frequencies range from 500 Hz to 4000 Hz in steps of 50 Hz.
+We can create variables that will be useful later in the study.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">z_col</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">r_col</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mi">4001</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;%&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is no column for the circumferential coordinate. The reason is, that we did a two dimensional, axi-symmetric
+simulation that does not require a circumferential coordinate.</p>
+</div>
+<p>We read both simulation files.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pressure_1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s2">&quot;data/comsolOrifice1.txt&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+<span class="n">pressure_2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s2">&quot;data/comsolOrifice2.txt&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We delete all positions that are too close to the orifice plate. Furthermore, we split the simulation in
+upstream (<em>negative z</em>) and downstream (<em>positive z</em>) sides.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pressure_1us</span> <span class="o">=</span> <span class="n">pressure_1</span><span class="p">[</span><span class="n">pressure_1</span><span class="p">[:,</span> <span class="n">z_col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">distance</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">pressure_1ds</span> <span class="o">=</span> <span class="n">pressure_1</span><span class="p">[</span><span class="n">pressure_1</span><span class="p">[:,</span> <span class="n">z_col</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">distance</span><span class="p">,</span> <span class="p">:]</span>
+
+<span class="n">pressure_2us</span> <span class="o">=</span> <span class="n">pressure_2</span><span class="p">[</span><span class="n">pressure_2</span><span class="p">[:,</span> <span class="n">z_col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">distance</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">pressure_2ds</span> <span class="o">=</span> <span class="n">pressure_2</span><span class="p">[</span><span class="n">pressure_2</span><span class="p">[:,</span> <span class="n">z_col</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">distance</span><span class="p">,</span> <span class="p">:]</span>
+</pre></div>
+</div>
+<p>We can check how many grid points we have on the upstream and the downstream side.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Probes on US side &quot;</span><span class="p">,</span> <span class="n">pressure_1us</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;. Probes on DS side: &quot;</span><span class="p">,</span> <span class="n">pressure_1ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Probes on US side  2500 . Probes on DS side:  2500
+</pre></div>
+</div>
+<p>Generally, we can use all grid points for post processing. However, this is not the best method
+if we have a large grid with many points. Instead, we will use a random choice of points.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">number_of_probes</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">mics_rows_US</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">pressure_1us</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">number_of_probes</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">mics_rows_DS</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">pressure_1ds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">number_of_probes</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We extract the coordinates of the random grid points.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">z_DS</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pressure_1ds</span><span class="p">[</span><span class="n">mics_rows_DS</span><span class="p">,</span> <span class="n">z_col</span><span class="p">])</span>  <span class="c1"># m</span>
+<span class="n">r_DS</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pressure_1ds</span><span class="p">[</span><span class="n">mics_rows_DS</span><span class="p">,</span> <span class="n">r_col</span><span class="p">])</span>   <span class="c1"># m</span>
+<span class="n">phi_DS</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">number_of_probes</span><span class="p">,</span> <span class="p">))</span>  <span class="c1"># deg</span>
+
+<span class="n">z_US</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pressure_1us</span><span class="p">[</span><span class="n">mics_rows_US</span><span class="p">,</span> <span class="n">z_col</span><span class="p">])</span>  <span class="c1"># m</span>
+<span class="n">r_US</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pressure_1us</span><span class="p">[</span><span class="n">mics_rows_US</span><span class="p">,</span> <span class="n">r_col</span><span class="p">])</span>   <span class="c1"># m</span>
+<span class="n">phi_US</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">number_of_probes</span><span class="p">,</span> <span class="p">))</span>  <span class="c1"># deg</span>
+</pre></div>
+</div>
+<p>We assign the random grid points as microphones to the object.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">td_US</span><span class="o">.</span><span class="n">set_microphone_positions</span><span class="p">(</span><span class="n">z_US</span><span class="p">,</span> <span class="n">r_US</span><span class="p">,</span> <span class="n">phi_US</span><span class="p">)</span>
+<span class="n">td_DS</span><span class="o">.</span><span class="n">set_microphone_positions</span><span class="p">(</span><span class="n">z_DS</span><span class="p">,</span> <span class="n">r_DS</span><span class="p">,</span> <span class="n">phi_DS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In order to decompose the simulation data, we must express it in a format that can be processed by
+<a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.decompose.html#acdecom.WaveGuide.decompose" title="acdecom.WaveGuide.decompose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.decompose()</span></code></a>.</p>
+<p>First, we remove all grid points except the random points that we have chosen for the decomposition. Furthermore,
+we remove the two columns that contain the coordinates of the grid points.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pressure_1us</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">pressure_1us</span><span class="p">[</span><span class="n">mics_rows_US</span><span class="p">,</span> <span class="p">:],</span> <span class="p">[</span><span class="n">z_col</span><span class="p">,</span><span class="n">r_col</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">pressure_1ds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">pressure_1ds</span><span class="p">[</span><span class="n">mics_rows_DS</span><span class="p">,</span> <span class="p">:],</span> <span class="p">[</span><span class="n">z_col</span><span class="p">,</span><span class="n">r_col</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">pressure_2us</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">pressure_2us</span><span class="p">[</span><span class="n">mics_rows_US</span><span class="p">,</span> <span class="p">:],</span> <span class="p">[</span><span class="n">z_col</span><span class="p">,</span><span class="n">r_col</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">pressure_2ds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">pressure_2ds</span><span class="p">[</span><span class="n">mics_rows_DS</span><span class="p">,</span> <span class="p">:],</span> <span class="p">[</span><span class="n">z_col</span><span class="p">,</span><span class="n">r_col</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next, we add a new row that contains the frequencies (similar to the line in the header of our file), and one
+more that contains the test case number. This row is has the value <em>0</em> for case 1, and <em>1</em> for case 2.
+Subsequently, we transpose the array, to have the data format required by <a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.decompose.html#acdecom.WaveGuide.decompose" title="acdecom.WaveGuide.decompose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.decompose()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pressure_1us</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">pressure_1us</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],))])</span><span class="o">.</span><span class="n">T</span>
+<span class="n">pressure_2us</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">pressure_2us</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],))])</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">pressure_1ds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">pressure_1ds</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],))])</span><span class="o">.</span><span class="n">T</span>
+<span class="n">pressure_2ds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">pressure_2ds</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],))])</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+<p>Finally, we combine the two cases at the upstream and the downstream sides to create two large data sets.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pressure_US</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">pressure_1us</span><span class="p">,</span> <span class="n">pressure_2us</span><span class="p">])</span>
+<span class="n">pressure_DS</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">pressure_1ds</span><span class="p">,</span> <span class="n">pressure_2ds</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The pressure at the different grid points is stored in the first <em>number_of_probes</em> columns.
+The frequency is stored in the second last column; and the case number is stored in the last column. We create
+variables that we will use later in this study.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mic_col</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">number_of_probes</span><span class="p">)</span>
+<span class="n">frequ_col</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+<span class="n">case_col</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="decomposition">
+<h2>3. Decomposition<a class="headerlink" href="#decomposition" title="Permalink to this headline">¶</a></h2>
+<p>With the pre-processed data, we can run the decomposition.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">decomp_us</span><span class="p">,</span> <span class="n">headers_us</span> <span class="o">=</span> <span class="n">td_US</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">pressure_US</span><span class="p">,</span> <span class="n">frequ_col</span><span class="p">,</span> <span class="n">mic_col</span><span class="p">,</span> <span class="n">case_col</span><span class="o">=</span><span class="n">case_col</span><span class="p">)</span>
+
+<span class="n">decomp_DS</span><span class="p">,</span> <span class="n">headers_DS</span> <span class="o">=</span> <span class="n">td_DS</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">pressure_DS</span><span class="p">,</span> <span class="n">frequ_col</span><span class="p">,</span> <span class="n">mic_col</span><span class="p">,</span> <span class="n">case_col</span><span class="o">=</span><span class="n">case_col</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="further-post-processing">
+<h2>4. Further Post-processing<a class="headerlink" href="#further-post-processing" title="Permalink to this headline">¶</a></h2>
+<p>We can print the <em>headersDS</em> to see the names of the columns of the arrays that store the decomposed sound fields.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">headers_us</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;(0,0) plus Direction&#39;, &#39;(0,0) minus Direction&#39;, &#39;f&#39;, &#39;Mach_number&#39;, &#39;temperature&#39;, &#39;Ps&#39;, &#39;condition number&#39;, &#39;case&#39;]
+</pre></div>
+</div>
+<p>We use that information to extract the modal data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">minusmodes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># from headers_us</span>
+<span class="n">plusmodes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Furthermore, we acquire the unique decomposed frequency points.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">frequs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">decomp_us</span><span class="p">[:,</span> <span class="n">headers_us</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)]))</span>
+<span class="n">nof</span> <span class="o">=</span> <span class="n">frequs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For each of the frequencies we compute the scattering matrix by solving a linear system of equations
+<span class="math notranslate nohighlight">\(S = p_+ p_-^{-1}\)</span>, wherein <span class="math notranslate nohighlight">\(S\)</span> is the scattering matrix and <span class="math notranslate nohighlight">\(p_{\pm}\)</span> are matrices containing the
+acoustic modes that are placed in rows and the different test cases that are placed in columns.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Details for the computation of the Scattering Matrix and the procedure to measure the different test-cases can be
+found in <a class="reference external" href="https://www.ingentaconnect.com/content/dav/aaua/2016/00000102/00000005/art00008">this study</a>.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">nof</span><span class="p">),</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">fIndx</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">frequs</span><span class="p">):</span>
+    <span class="n">frequ_rows</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">decomp_us</span><span class="p">[:,</span> <span class="n">headers_us</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)]</span> <span class="o">==</span> <span class="n">f</span><span class="p">)</span>
+    <span class="n">ppm_us</span> <span class="o">=</span> <span class="n">decomp_us</span><span class="p">[</span><span class="n">frequ_rows</span><span class="p">]</span>
+    <span class="n">ppm_DS</span> <span class="o">=</span> <span class="n">decomp_DS</span><span class="p">[</span><span class="n">frequ_rows</span><span class="p">]</span>
+    <span class="n">pp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">ppm_us</span><span class="p">[:,</span><span class="n">plusmodes</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ppm_DS</span><span class="p">[:,</span><span class="n">plusmodes</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+    <span class="n">pm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">ppm_us</span><span class="p">[:,</span><span class="n">minusmodes</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ppm_DS</span><span class="p">[:,</span><span class="n">minusmodes</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+    <span class="n">S</span><span class="p">[:,:,</span><span class="n">fIndx</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">pm</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot">
+<h2>5. Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h2>
+<p>We can plot the transmission coefficients. Transmission coefficients higher than 1 indicate frequencies where
+amplification can occur.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">amplification_us</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">1</span>
+<span class="n">amplification_ds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">1</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">frequs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">frequs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequs</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]),</span>
+         <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#D38D7B&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequs</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]),</span>
+         <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#67A3C1&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequs</span><span class="p">[</span><span class="n">amplification_us</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">amplification_us</span><span class="p">]),</span>
+         <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#D38D7B&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Transmission Upstream&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequs</span><span class="p">[</span><span class="n">amplification_ds</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">amplification_ds</span><span class="p">]),</span>
+         <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#67A3C1&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Transmission Downstream&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [Hz]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Scattering Magnitude&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Sound transmission including absorption and amplification at </span><span class="se">\n</span><span class="s2"> an orifice plate with flow.&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="Sound transmission including absorption and amplification at   an orifice plate with flow." class="sphx-glr-single-img" src="../_images/sphx_glr_plot_comsolOrifice_001.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  9.919 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-comsolorifice-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/02328285f9d0c517bec0a6011aba29fa/plot_comsolOrifice.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_comsolOrifice.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/b131737cdc874140551bf58144853de2/plot_comsolOrifice.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_comsolOrifice.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to post-process simulation data</a><ul>
+<li><a class="reference internal" href="#initialization">1. Initialization</a></li>
+<li><a class="reference internal" href="#data-preparation">2. Data Preparation</a></li>
+<li><a class="reference internal" href="#decomposition">3. Decomposition</a></li>
+<li><a class="reference internal" href="#further-post-processing">4. Further Post-processing</a></li>
+<li><a class="reference internal" href="#plot">5. Plot</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="plot_RienstraCutOns.html"
+                        title="previous chapter">How to compute wavenumbers and cut-ons</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../_autosummary/acdecom.WaveGuide.html"
+                        title="next chapter">acdecom.WaveGuide</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/auto_examples/plot_comsolOrifice.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../_autosummary/acdecom.WaveGuide.html" title="acdecom.WaveGuide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="plot_RienstraCutOns.html" title="How to compute wavenumbers and cut-ons"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to post-process simulation data</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Stefan Sack.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>acdecom - acoustic mode decomposition in flow ducts &#8212; acdecom 20/06/12 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Theory and Definitions" href="theory/theory.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="theory/theory.html" title="Theory and Definitions"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">acdecom 20/06/12 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">acdecom - acoustic mode decomposition in flow ducts</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="acdecom-acoustic-mode-decomposition-in-flow-ducts">
+<h1>acdecom - acoustic mode decomposition in flow ducts<a class="headerlink" href="#acdecom-acoustic-mode-decomposition-in-flow-ducts" title="Permalink to this headline">¶</a></h1>
+<p>Acdecom is a Python module that makes the post-processing of acoustic data in flow ducts easy. It is developed and
+maintained by the <a class="reference external" href="https://www.ave.kth.se/avd/mwl/the-marcus-wallenberg-laboratory-for-sound-and-vibration-research-mwl-1.34565">Marcus Wallenberg Laboratory for Sound and Vibration Research</a>.</p>
+<p><strong>The package features:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>An easy-to-set-up three-step decomposition scheme for experiments and simulations</p></li>
+<li><p>Predefined wavenumbers, acoustic mode shapes, and attenuation models for the most common geometries</p></li>
+<li><p>Preparation of decomposition matrices based on auto-detected cut-on modes</p></li>
+<li><p>High customizability</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>The module can be easily installed using PiPy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;</span>&gt; pip install acdecom
+</pre></div>
+</div>
+<p>The source code is available at <a class="reference external" href="https://github.com/ssackMWL/acdecom">GitHub</a>.</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="theory/theory.html">Theory and Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/acdecom.WaveGuide.html">The WaveGuide Class</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="acknowledgement">
+<h2>Acknowledgement<a class="headerlink" href="#acknowledgement" title="Permalink to this headline">¶</a></h2>
+<p>This project was conducted as part of a project within the Competence Center for Gas Exchange (CCGEx) at KTH. The
+authors would like to acknowledge the Swedish Energy Agency, Volvo Cars, Volvo GTT, Scania, BorgWarner Turbo Systems
+Engineering, and Wärtsilä for their support and contributions. The authors also wish to acknowledge the financial
+support of the European Commission provided in the framework of the FP7 Collaborative Project IDEALVENT
+(Grant Agreement 314066).</p>
+<p>Icons made by <a class="reference external" href="https://www.flaticon.com/free-icon/sound-wave_3225510">iconixar</a> from  <a class="reference external" href="https://www.flaticon.com/">www.flaticon.com</a>.
+Some of the artwork was found on <a class="reference external" href="https://www.pexels.com">https://www.pexels.com/</a>.</p>
+</div>
+<div class="section" id="the-module">
+<h2>The Module<a class="headerlink" href="#the-module" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/acdecom.html#module-acdecom" title="acdecom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">acdecom</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">acdecom.WaveGuide</span></code></a>(dimensions, **kwargs)</p></td>
+<td><p>This class can be used to decompose in-duct sounds into acoustic modes.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="#">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">acdecom - acoustic mode decomposition in flow ducts</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#acknowledgement">Acknowledgement</a></li>
+<li><a class="reference internal" href="#the-module">The Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="theory/theory.html"
+                        title="next chapter">Theory and Definitions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="theory/theory.html" title="Theory and Definitions"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">acdecom 20/06/12 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">acdecom - acoustic mode decomposition in flow ducts</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Stefan Sack.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

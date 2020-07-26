@@ -1,0 +1,6 @@
+acdecom.WaveGuide.decompose
+===========================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.decompose

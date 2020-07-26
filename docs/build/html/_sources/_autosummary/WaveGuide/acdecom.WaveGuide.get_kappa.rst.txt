@@ -1,0 +1,6 @@
+acdecom.WaveGuide.get\_kappa
+============================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.get_kappa

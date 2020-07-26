@@ -1,0 +1,59 @@
+testdomain
+==========
+
+.. currentmodule:: domain
+
+.. autoclass:: testdomain
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~testdomain.findCutOn
+      ~testdomain.getC
+      ~testdomain.getCCircular
+      ~testdomain.getCRect
+      ~testdomain.getDomainValues
+      ~testdomain.getEigenValue
+      ~testdomain.getEigenValueCircular
+      ~testdomain.getEigenValueRect
+      ~testdomain.getK0
+      ~testdomain.getKappa
+      ~testdomain.getPsi
+      ~testdomain.getPsiCircular
+      ~testdomain.getPsiRect
+      ~testdomain.getRadius
+      ~testdomain.getWaveNumber
+      ~testdomain.modalDecomposition
+      ~testdomain.modalMatrix
+      ~testdomain.readMicrophoneFile
+      ~testdomain.setDistance
+      ~testdomain.setFlipFlow
+      ~testdomain.setMicrophonePositions
+      ~testdomain.setTemperaturePressure
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: findCutOn
+   .. automethod:: getC
+   .. automethod:: getCCircular
+   .. automethod:: getCRect
+   .. automethod:: getDomainValues
+   .. automethod:: getEigenValue
+   .. automethod:: getEigenValueCircular
+   .. automethod:: getEigenValueRect
+   .. automethod:: getK0
+   .. automethod:: getKappa
+   .. automethod:: getPsi
+   .. automethod:: getPsiCircular
+   .. automethod:: getPsiRect
+   .. automethod:: getRadius
+   .. automethod:: getWaveNumber
+   .. automethod:: modalDecomposition
+   .. automethod:: modalMatrix
+   .. automethod:: readMicrophoneFile
+   .. automethod:: setDistance
+   .. automethod:: setFlipFlow
+   .. automethod:: setMicrophonePositions
+   .. automethod:: setTemperaturePressure

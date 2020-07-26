@@ -1,0 +1,6 @@
+acdecom.WaveGuide.get\_eigenvalue
+=================================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.get_eigenvalue

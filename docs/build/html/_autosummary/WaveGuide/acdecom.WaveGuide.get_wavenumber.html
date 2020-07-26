@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>acdecom.WaveGuide.get_wavenumber &#8212; acdecom 20/06/12 documentation</title>
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="acdecom.WaveGuide.read_microphonefile" href="acdecom.WaveGuide.read_microphonefile.html" />
+    <link rel="prev" title="acdecom.WaveGuide.get_radius" href="acdecom.WaveGuide.get_radius.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.read_microphonefile.html" title="acdecom.WaveGuide.read_microphonefile"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.get_radius.html" title="acdecom.WaveGuide.get_radius"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../acdecom.WaveGuide.html" accesskey="U">acdecom.WaveGuide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">acdecom.WaveGuide.get_wavenumber</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="acdecom-waveguide-get-wavenumber">
+<h1>acdecom.WaveGuide.get_wavenumber<a class="headerlink" href="#acdecom-waveguide-get-wavenumber" title="Permalink to this headline">¶</a></h1>
+<dl class="py method">
+<dt id="acdecom.WaveGuide.get_wavenumber">
+<code class="sig-prename descclassname">WaveGuide.</code><code class="sig-name descname">get_wavenumber</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#acdecom.WaveGuide.get_wavenumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the wavenumber of the (m,n)-mode at the frequency f [Hz].</p>
+<div class="math notranslate nohighlight">
+\[k_{mn\pm} = \pm K_0 \frac{\omega}{c} \frac{\sqrt{1-(\kappa_{mn}c/\omega)^2(1-M)}\mp M}{1-M^2}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(K_0\)</span> is the dissipation factor (see <a class="reference internal" href="acdecom.WaveGuide.get_K0.html#acdecom.WaveGuide.get_K0" title="acdecom.WaveGuide.get_K0"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_K0()</span></code></a>),
+<span class="math notranslate nohighlight">\(\omega\)</span> is the angular frequency, <span class="math notranslate nohighlight">\(c\)</span> is the speed of sound,
+<span class="math notranslate nohighlight">\(\kappa_{mn}\)</span> is the eigenvalue (see <a class="reference internal" href="acdecom.WaveGuide.get_eigenvalue.html#acdecom.WaveGuide.get_eigenvalue" title="acdecom.WaveGuide.get_eigenvalue"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_eigenvalue()</span></code></a>), and
+<span class="math notranslate nohighlight">\(M\)</span> is the Mach_number.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The flow is assumed to move in <span class="math notranslate nohighlight">\(z_+\)</span> direction. For flow towards
+math:<cite>z_-</cite>, you can either use a negative Mach_number or call <a class="reference internal" href="acdecom.WaveGuide.set_flip_flow.html#acdecom.WaveGuide.set_flip_flow" title="acdecom.WaveGuide.set_flip_flow"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.set_flip_flow()</span></code></a>
+with flipFlow = <em>True</em>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m</strong> (<em>int</em><em> or </em><em>array_like</em>) – Mode-order in the first direction. If the waveguide is circular, m indicates the circumferential mode-order.
+The plane wave has the order 0.</p></li>
+<li><p><strong>n</strong> (<em>int</em><em> or </em><em>array_like</em>) – Mode-order in the second direction. If the waveguide is circular, n indicates the radial mode-order.
+The plane wave has the order 0.</p></li>
+<li><p><strong>f</strong> (<em>float</em>) – Frequency [Hz].</p></li>
+<li><p><strong>dissipative</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <em>True</em>, the wavenumber is corrected with the dissipation model. If <em>False</em>, <span class="math notranslate nohighlight">\(K_0\)</span> is set to 1.
+Defaults to <em>True</em>.</p></li>
+<li><p><strong>sign</strong> (<em>1</em><em> or </em><em>-1</em>) – The direction of the wave propagation. 1 means <span class="math notranslate nohighlight">\(z_+\)</span> direction, -1 means <span class="math notranslate nohighlight">\(z_-\)</span> direction.
+Set to 1 for <span class="math notranslate nohighlight">\(k_+\)</span> and  -1 for <span class="math notranslate nohighlight">\(k_-\)</span>. Defaults to 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The wavenumber(s) of the (m,n)-mode at the frequency f [Hz].</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>complex or array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="acdecom.WaveGuide.get_radius.html"
+                        title="previous chapter">acdecom.WaveGuide.get_radius</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="acdecom.WaveGuide.read_microphonefile.html"
+                        title="next chapter">acdecom.WaveGuide.read_microphonefile</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/_autosummary/WaveGuide/acdecom.WaveGuide.get_wavenumber.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.read_microphonefile.html" title="acdecom.WaveGuide.read_microphonefile"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.get_radius.html" title="acdecom.WaveGuide.get_radius"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../acdecom.WaveGuide.html" >acdecom.WaveGuide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">acdecom.WaveGuide.get_wavenumber</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Stefan Sack.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

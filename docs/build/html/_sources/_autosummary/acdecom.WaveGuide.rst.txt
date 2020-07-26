@@ -1,0 +1,49 @@
+acdecom.WaveGuide
+=================
+
+.. currentmodule:: acdecom
+
+.. autoclass:: WaveGuide
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree: WaveGuide
+   
+      ~WaveGuide.K0_dokumaci
+      ~WaveGuide.K0_kirchoff
+      ~WaveGuide.K0_stinson_circular
+      ~WaveGuide.K0_stinson_rect
+      ~WaveGuide.__init__
+      ~WaveGuide.decompose
+      ~WaveGuide.find_cuton
+      ~WaveGuide.get_K0
+      ~WaveGuide.get_T
+      ~WaveGuide.get_c
+      ~WaveGuide.get_c_circular
+      ~WaveGuide.get_c_rect
+      ~WaveGuide.get_domainvalues
+      ~WaveGuide.get_eigenvalue
+      ~WaveGuide.get_eigenvalue_circular
+      ~WaveGuide.get_eigenvalue_rect
+      ~WaveGuide.get_kappa
+      ~WaveGuide.get_modalmatrix
+      ~WaveGuide.get_psi
+      ~WaveGuide.get_psi_circular
+      ~WaveGuide.get_psi_rect
+      ~WaveGuide.get_radius
+      ~WaveGuide.get_wavenumber
+      ~WaveGuide.read_microphonefile
+      ~WaveGuide.set_distance
+      ~WaveGuide.set_flip_flow
+      ~WaveGuide.set_microphone_positions
+      ~WaveGuide.set_temperature_pressure
+   
+   
+
+   
+   
+   

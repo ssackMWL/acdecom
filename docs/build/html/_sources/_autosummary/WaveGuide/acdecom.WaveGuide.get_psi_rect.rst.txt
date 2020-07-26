@@ -1,0 +1,6 @@
+acdecom.WaveGuide.get\_psi\_rect
+================================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.get_psi_rect

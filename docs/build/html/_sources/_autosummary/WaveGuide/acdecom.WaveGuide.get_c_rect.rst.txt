@@ -1,0 +1,6 @@
+acdecom.WaveGuide.get\_c\_rect
+==============================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.get_c_rect

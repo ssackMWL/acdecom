@@ -1,0 +1,6 @@
+acdecom.WaveGuide.get\_T
+========================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.get_T

@@ -1,0 +1,6 @@
+acdecom.WaveGuide.get\_domainvalues
+===================================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.get_domainvalues

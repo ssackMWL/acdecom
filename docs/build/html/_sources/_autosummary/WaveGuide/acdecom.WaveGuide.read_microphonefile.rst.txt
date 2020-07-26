@@ -1,0 +1,6 @@
+acdecom.WaveGuide.read\_microphonefile
+======================================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.read_microphonefile

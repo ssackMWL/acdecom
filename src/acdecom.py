@@ -8,65 +8,65 @@ import warnings
 
 class WaveGuide:
     r""" This class can be used to decompose in-duct sounds into acoustic modes. It can be used for experimental data
-    as well as for numeric data.
+    and for numeric data.
     """
 
     def __init__(self, dimensions, **kwargs):
         r"""
-            Paremeters for initializiation:
+            Parameters for initialization:
 
             Parameters
             ----------
             dimensions : array_like
-                The dimensions of the wave-guide.
-                    - For a circular duct, dimensions is (radius, ).
-                    - For  a rectangular duct, dimension is (dimension x, dimension y).
-                    - For any other shape, dimensions can be specified in the same way (dimension 1, dimension 2, ...).
+                The dimensions of the waveguide.
+                    - For a circular duct, *dimensions* is (radius, ).
+                    - For  a rectangular duct, *dimension* is (dimension x, dimension y).
+                    - For any other shape, *dimensions* can be specified in the same way (dimension 1, dimension 2, ...).
             temperature : float, optional
-                Temperature in Kelvin of the medium inside the wave-guide. Defaults to T 293.15.
+                Temperature in Kelvin of the medium inside the waveguide. Defaults to T 293.15.
             M : float, optional
                 Bulk Mach_number in :math:`z_+` direction. Defaults to 0.
             flip_flow : boolean, optional
-                If True, it changes the flow-direction from :math:`z_+` to :math:`z_-` direction. A negative Mach number
-                has the same effect. Defaults to False.
+                If *True*, it changes the flow-direction from :math:`z_+` to :math:`z_-` direction. A negative Mach
+                number has the same effect. Defaults to *False*.
             damping : {"no", "kirchoff","dokumaci"}, optional
                 Choose one of the pre-defined acoustic dispersion models. Defaults to "no".
-                    - "no": no predefined dissipation is used. This should be set to implement own dissipation models.
+                    - "no": no predefined dissipation is used. This should be used to implement custom dissipation models.
                     - "kirchoff":  `Kirchoff's thermo-viscous dissipation <https://onlinelibrary.wiley.com/doi/abs/10.1002/andp.18682100602>`_ is used.
-                    - "dokumaci": `Dokumaci's thermo-viscous dissipation <https://www.sciencedirect.com/science/article/pii/S0022460X14004921>`_ is used. Useful for higher-order modes and wave-guides with flow.
-                    - "stinson": `Stinson's thermo-viscous dissipation is used. <https://asa.scitation.org/doi/10.1121/1.400379>`_
+                    - "dokumaci": `Dokumaci's thermo-viscous dissipation <https://www.sciencedirect.com/science/article/pii/S0022460X14004921>`_ is used. Useful for higher order modes and waveguides with flow.
+                    - "stinson": `Stinson's thermo-viscous dissipation <https://asa.scitation.org/doi/10.1121/1.400379>`_is used.
             distance : float
-                The Distance between the decomposition cross-section and the first microphone. Defaults to 0.
+                The distance between the decomposition cross section and the first microphone. Defaults to 0.
             cross_section : {"circular","rectangular","custom"}, optional
-                Chose one of the pre-defined duct profiles. Defaults to "circular". If set to "custom", the methods
+                Choose one of the pre-defined duct profiles. Defaults to "circular". If set to "custom" the methods
                 :meth:`.WaveGuide.get_c`, :meth:`WaveGuide.get_psi` , and :meth:`.WaveGuide.get_wavenumber` should be
                 customized.
             f_max : float, optional
                 If set, all propagating modes up to the frequency `f_max` [Hz] are pre-computed and decompositions run
                 faster. Defaults to 1000.
             gas_constant: float, optional
-                The ideal gas constant of the medium inside the wave-guide. Defaults to 287.053072.
+                The ideal gas constant of the medium inside the waveguide. Defaults to 287.053072.
             dynamic_viscosity : float, optional
-                The dynamic viscosity of the medium inside the wave-guide. Defaults to 10.13e-6.
+                The dynamic viscosity of the medium inside the waveguide. Defaults to 10.13e-6.
             pressure : float, optional
-                The static pressure of the medium inside the  wave-guide. Defaults to 101000.
+                The static pressure of the medium inside the  waveguide. Defaults to 101.000.
             heat_capacity : float, optional
-                The heat capacity ratio of the medium inside the wave-guide. Defaults to 1.401.
+                The heat capacity ratio of the medium inside the waveguide. Defaults to 1.401.
             thermal_conductivity : float, optional
-                The thermal conductivity of the medium inside the wave-guide. Defaults to 0.02587.
+                The thermal conductivity of the medium inside the waveguide. Defaults to 0.02587.
             eigenvalue : functional, optional
-                Uses an external function to compute the eigenvalues. If not specified, the cross-section specific
-                function is used. If a custom cross-section is specified, the eigenvalue defaults to 1.
+                Uses an external function to compute the eigenvalues. If not specified, the cross section specific
+                function is used. If a custom cross section is specified, the eigenvalue defaults to 1.
             modeshape : functional, optional
-                Uses an external function to compute the mode shapes. If not specified, the cross-section specific
-                function is used. If a custom cross-section is specified, the mode-shape defaults to 1.
+                Uses an external function to compute the mode shapes. If not specified, the cross section specific
+                function is used. If a custom cross section is specified, the mode shapee defaults to 1.
             wavenumber : functional, optional
-                Uses an external function to compute the wave-number. If not specified, the cross-section specific
-                function is used. If a custom cross-section is specified, the wave-number defaults to the wave-number
+                Uses an external function to compute the wavenumber. If not specified, the cross section specific
+                function is used. If a custom cross section is specified, the wavenumber defaults to the wavenumber
                 for a circular duct.
             normalization : functional, optional
                 Uses an external function to compute the normalization factor for the mode shapes. If not specified,
-                the cross-section specific function is used. If a custom cross-section is specified, the mode-shape
+                the cross section specific function is used. If a custom cross section is specified, the mode shapee
                 normalization defaults to 1.
             """
 
@@ -88,7 +88,7 @@ class WaveGuide:
         # Define the parameter of the air
         self.gas_constant = kwargs.get("gas_constant", 287.053072)
         self.mu = kwargs.get("dynamic_viscosity", 18.13e-6)
-        self.p0 = kwargs.get("pressure", 101325)
+        self.p0 = kwargs.get("pressure", 101000)
         self.gamma = kwargs.get("heat_capacity", 1.401)
         self.kth = kwargs.get("thermal_conductivity", 0.02587)
         # Compute specific heat constant
@@ -108,35 +108,35 @@ class WaveGuide:
         # Allocate the cut on mode to 1, will be recalculated later
         self.cuton_mode = 1;
         self.ref_angle = 0;
-        # Allocate the distance between the microphones and the decomposition cross-section. Important for loss model.
+        # Allocate the distance between the microphones and the decomposition cross section. Important for loss model.
         self.distance = kwargs.get("distance",0)
         self.frequency = 0
         self._link_functions(**kwargs)
         self.get_kappa = numpy.vectorize(self.get_kappa)
-        # Set the eigenvalues for the first propagating mode (plane - wave)
+        # Set the eigenvalues for the first propagating mode (plane wave)
         self.kappa = self._init_eigenvalue_matrix(0, 0)
         # Set the moce vecotrs and the eigenvalues for all modes that can propagate in the expected frequency range
         self.mode_vector, self.kappa = self._init_modes()
 
     def _link_functions(self, **kwargs):
         """
-        Links the cross-section specific and problem specific functions to the class.
+        Links the cross section specific and problem specific functions to the class.
 
         Parameters
         ----------
         eigenvalue : functional, optional
-            Uses an external function to compute the eigenvalues. If not specified, the cross-section specific
-            function is used. If a custom cross-section is specified, the eigenvalue defaults to 1.
+            Uses an external function to compute the eigenvalues. If not specified, the cross section specific
+            function is used. If a custom cross section is specified, the eigenvalue defaults to 1.
         modeshape : functional, optional
-            Uses an external function to compute the mode shapes. If not specified, the cross-section specific
-            function is used. If a custom cross-section is specified, the mode-shape defaults to 1.
+            Uses an external function to compute the mode shapes. If not specified, the cross section specific
+            function is used. If a custom cross section is specified, the mode shapee defaults to 1.
         wavenumber : functional, optional
-            Uses an external function to compute the wave-number. If not specified, the cross-section specific
-            function is used. If a custom cross-section is specified, the wave-number defaults to the wave-number
+            Uses an external function to compute the wavenumber. If not specified, the cross section specific
+            function is used. If a custom cross section is specified, the wavenumber defaults to the wavenumber
             for a circular duct.
         normalization : functional, optional
             Uses an external function to compute the normalization factor for the mode shapes. If not specified,
-            the cross-section specific function is used. If a custom cross-section is specified, the mode-shape
+            the cross section specific function is used. If a custom cross section is specified, the mode shapee
             normalization defaults to 1.
         """
 
@@ -183,15 +183,15 @@ class WaveGuide:
         Parameters
         ----------
         m : integer
-            Mode order in first direction. If the wave-guide is circular, m indicates the circumferential mode order.
-            The plane-wave has the order 0.
+            Mode-order in the first direction. If the waveguide is circular, m indicates the circumferential mode-order.
+            The plane wave has the order 0.
         n : integer
-            Mode order in second direction. If the wave-guide is circular, n indicates the radial mode order.
-            The plane-wave has the order 0.
+            Mode-order in the second direction. If the waveguide is circular, n indicates the radial mode-order.
+            The plane wave has the order 0.
 
         Returns
         -------
-        numpy.ndArray of the dimension m x n that contains the eigenvalues for all modes up to the mode order (m,n).
+        numpy.ndArray of the dimension m x n that contains the eigenvalues for all modes up to the mode-order (m,n).
         """
 
         ematrix = numpy.zeros((m + 2, n + 2))
@@ -215,10 +215,10 @@ class WaveGuide:
         """
 
         mode_vector = []
-        # At least the plane-wave ( (0,0)- mode ) must be cut-on
+        # At least the plane wave ( (0,0)- mode ) must be cut-on
         maxm = 0
         maxn = 0
-        # Find the first m-mode order that is cut-off
+        # Find the first m-mode-order that is cut-off
         while (numpy.imag(self.get_wavenumber(maxm, 0, self.f_max, sign=-1, dissipative=False)) == 0 and
                numpy.imag(self.get_wavenumber(maxm, 0, self.f_max, sign=+1, dissipative=False)) == 0):
             maxm += 1
@@ -233,7 +233,7 @@ class WaveGuide:
         currentm, currentn = numpy.unravel_index(numpy.argmin(ematrix, axis=None), ematrix.shape)
         while (numpy.imag(self.get_wavenumber(currentm, currentn, self.f_max, sign=-1, dissipative=False)) == 0 and
                numpy.imag(self.get_wavenumber(currentm, currentn, self.f_max, sign=+1, dissipative=False)) == 0):
-            # If the duct is circular, the mode order can be positive and negative
+            # If the duct is circular, the mode-order can be positive and negative
             if self.cross_section == "circular" and not currentm == 0:
                 mode_vector.append([-1 * currentm, currentn])
             mode_vector.append([currentm, currentn])
@@ -244,13 +244,13 @@ class WaveGuide:
 
     def get_domainvalues(self):
         """
-        Returns the haracteristic properties of the wave-guide and the medium.
+        Returns the characteristic properties of the waveguide and the medium.
 
         Returns
         -------
         dict
             The characteristic properties {"density", "dynamic_viscosity", "specific_heat", "heat_capacity",
-            "thermal_conductivity", "speed_of_sound", "Mach_number", "radius", "bulk-viscosity"} of the wave-guide and
+            "thermal_conductivity", "speed_of_sound", "Mach_number", "radius", "bulk-viscosity"} of the waveguide and
             the medium.
         """
 
@@ -260,12 +260,12 @@ class WaveGuide:
 
     def set_distance(self, d):
         """
-        Sets the distance between the first microphone and the decomposition cross-section.
+        Sets the distance between the first microphone and the decomposition cross section.
 
         Parameters
         ----------
         d : float
-            Distance in [m] between the first microphone and the decomposition cross-section.
+            Distance in [m] between the first microphone and the decomposition cross section.
         """
         # Subtract the old distance and add the new distance
         self.microphone_position = self.microphone_position + d - self.distance
@@ -273,12 +273,12 @@ class WaveGuide:
 
     def get_radius(self):
         """
-        Returns the radius or an equivalent measure for the wave-guide.
+        Returns the radius or an equivalent measure for the waveguide.
 
         Returns
         -------
         float
-            If the wave-guide's cross-section is "circular", the radius is returned. If the wave-guide is "rectangular",
+            If the waveguide's cross section is "circular", the radius is returned. If the waveguide is "rectangular",
             the hydraulic radius is returned. Otherwise, dimension[0] is returned.
         """
 
@@ -294,15 +294,15 @@ class WaveGuide:
 
     def set_temperature_pressure(self, t=None, p0=None):
         """
-        Sets the temperature and pressure in the wave-guide. Recalculates the speed of sound, the density, and the
+        Sets the temperature and pressure in the waveguide. Recalculates the speed of sound, the density, and the
         Mach_number.
 
         Parameters
         ----------
         t : float
-            Temperature in Kelvin of the medium inside the wave-guide.
+            Temperature in Kelvin of the medium inside the waveguide.
         p0 : float, optional
-            Static pressure in Pa of the medium inside the wave-guide.
+            Static pressure in Pa of the medium inside the waveguide.
         """
 
         # Update temperature and pressure
@@ -318,12 +318,12 @@ class WaveGuide:
 
     def set_flip_flow(self, flip_flow):
         """
-        Set the flow direction. Standard flow direction is in P+ direction.
+        Set the flow direction. Standard flow direction is in :math:`P_+` direction.
 
         Parameters
         ----------
         flip_flow : bool
-            If flip_flow is True, the flow direction is in P- direction (towards the test component).
+            If flip_flow is *True*, the flow direction is in :math:`P_-` direction (towards the test component).
         """
 
         if flip_flow:
@@ -337,22 +337,30 @@ class WaveGuide:
         The file must have the following structure:
             - For Circular duct:
 
-                axialPos1 radialPos1 circumferentialPos1 \n
-                axialPos2 radialPos2 circumferentialPos2 \n
+                ===  ===  ==
+                z1   r1   :math:`\Phi` 1
+                z2   r2   :math:`\Phi` 2
+                ...  ...  ...
+                zm   rm   :math:`\Phi` m
+                ===  ===  ==
 
             - For other ducts:
-
-                axialPos1 xPos1 yPos1 \n
-                axialPos2 xPos1 xPos2 \n
+                ===  ===  ==
+                z1   x1       :math:`y` m
+                z2   x2       :math:`y` m
+                ...  ...      ...
+                zm   xm       :math:`y` m
+                ===  ===  ==
 
         Parameters
         ----------
         filename : str
-            Full Path to the File that contains the microphone data.
+            Full Path to the file that contains the microphone data.
         cylindrical_coordinates : bool, optional
-            If true, the circumferential position is converted from deg. to radians.
+            If *True* the circumferential position is converted from deg. to radians.
         kwargs : additional parameters
-            Will be passed to numpy.loadtxt . Please refer to the numpy documentation for information.
+            Will be passed to `numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_\.
+            Please refer to the numpy documentation for information.
         """
 
         self.microphone_position = numpy.loadtxt(filename, **kwargs)
@@ -370,13 +378,13 @@ class WaveGuide:
         posz : array_like
             Axial positions of the pressure probes.
         pos1 : array_like
-            Position of the pressure probe in the first dimension. For wave-guides with circular cross-section, this
+            Position of the pressure probe in the first dimension. For waveguides with circular cross section, this
             is the radial position in meters.
         pos2 : array_like
-            Position of the pressure probe in the second dimension. For wave-guides with circular cross-sections, this
+            Position of the pressure probe in the second dimension. For waveguides with circular cross sections, this
             is the circumferential position in deg.
         cylindrical_coordinates : bool, optional
-            If true, the circumferential position is converted from deg. to radians.
+            If *True* the circumferential position is converted from deg. to radians.
         """
 
         self.microphone_position = numpy.zeros((len(posz), 3))
@@ -389,19 +397,19 @@ class WaveGuide:
 
     def get_eigenvalue(self, m, n, **kwargs):
         """
-        Place holder for the eigenvalue of the (m,n)-mode. When the object is initialized, this function may be
+        Placeholder for the eigenvalue of the (m,n)-mode. When the object is initialized, this function may be
         overwritten either by one of the predefined eigenvalue functions :meth:`.WaveGuide.get_eigenvalue_circular`
-        (circular wave-guide) and :meth:`.WaveGuide.get_eigenvalue_rect` (rectangular wave-guide),
+        (circular waveguide) and :meth:`.WaveGuide.get_eigenvalue_rect` (rectangular waveguide),
         or a custom function.
 
         Parameters
         ----------
         m : int
-            Mode order in first direction. If the wave-guide is circular, m indicates the circumferential mode order.
-            The plane-wave has the order 0.
+            Mode-order in the first direction. If the waveguide is circular, m indicates the circumferential mode-order.
+            The plane wave has the order 0.
         n : integer
-            Mode order in second direction. If the wave-guide is circular, n indicates the radial mode order.
-            The plane-wave has the order 0.
+            Mode-order in the second direction. If the waveguide is circular, n indicates the radial mode-order.
+            The plane wave has the order 0.
         kwargs : additional arguments
 
         Returns
@@ -425,9 +433,9 @@ class WaveGuide:
         Parameters
         ----------
         m : int
-            Mode order in circumferential direction. The plane-wave has the order 0.
+            Mode-order in the circumferential direction. The plane wave has the order 0.
         n : integer
-            Mode order in radial direction. The plane-wave has the order 0.
+            Mode-order in the radial direction. The plane wave has the order 0.
         kwargs : additional arguments
 
         Returns
@@ -452,9 +460,9 @@ class WaveGuide:
         Parameters
         ----------
         m : int
-            Mode order in x-direction. The plane-wave has the order 0.
+            Mode-order in x-direction. The plane wave has the order 0.
         n : integer
-            Mode order in y-direction. The plane-wave has the order 0.
+            Mode-order in y-direction. The plane wave has the order 0.
         kwargs : additional arguments
 
         Returns
@@ -474,9 +482,9 @@ class WaveGuide:
         Parameters
         ----------
         m : int
-            Mode order in circumferential direction. The plane-wave has the order 0.
+            Mode-order in the circumferential direction. The plane wave has the order 0.
         n : integer
-            Mode order in radial direction. The plane-wave has the order 0.
+            Mode-order in the radial direction. The plane wave has the order 0.
 
         Returns
         -------
@@ -493,10 +501,10 @@ class WaveGuide:
 
     def get_c(self, m, n, **kwargs):
         """
-        Place holder for the normalization of the mode-shape of the (m,n)-mode.
+        Placeholder for the normalization of the mode shapee of the (m,n)-mode.
         When the object is initialized, this function may be overwritten either by one of the predefined
-        normalization functions :meth:`.WaveGuide.get_c_circular` (circular wave-guide) and
-        :meth:`.WaveGuide.get_c_rect` (rectangular wave-guide), or a custom function. The predefined functions
+        normalization functions :meth:`.WaveGuide.get_c_circular` (circular waveguide) and
+        :meth:`.WaveGuide.get_c_rect` (rectangular waveguide), or a custom function. The predefined functions
         normalize the mode shapes to be orthonormal, i.e.,
 
         .. math ::
@@ -507,11 +515,11 @@ class WaveGuide:
         Parameters
         ----------
         m : int
-            Mode order in first direction. If the wave-guide is circular, m indicates the circumferential mode order.
-            The plane-wave has the order 0.
+            Mode-order in the first direction. If the waveguide is circular, m indicates the circumferential mode-order.
+            The plane wave has the order 0.
         n : integer
-            Mode order in second direction. If the wave-guide is circular, n indicates the radial mode order.
-            The plane-wave has the order 0.
+            Mode-order in the second direction. If the waveguide is circular, n indicates the radial mode-order.
+            The plane wave has the order 0.
         kwargs : additional arguments.
 
         Returns
@@ -524,7 +532,7 @@ class WaveGuide:
 
     def get_c_rect(self, m, n, **kwargs):
         r"""
-        Return the normalization of the (m,n)-mode for a rectangular duct. Modes are normalized to be ortho-normal.
+        Return the normalization of the (m,n)-mode for a rectangular duct. Modes are normalized to be orthonormal.
 
         .. math ::
             C_{mn} = \frac{\sqrt{a b}}{2}
@@ -532,9 +540,9 @@ class WaveGuide:
         Parameters
         ----------
         m : int
-            Mode order in x-direction. The plane-wave has the order 0.
+            Mode-order in x-direction. The plane wave has the order 0.
         n : integer
-            Mode order in y-direction. The plane-wave has the order 0.
+            Mode-order in y-direction. The plane wave has the order 0.
         kwargs : additional arguments
 
         Returns
@@ -547,20 +555,20 @@ class WaveGuide:
 
     def get_c_circular(self, m, n, **kwargs):
         """
-        Return the normalization of the (m,n)-mode for a circular duct. Modes are normalized to be ortho-normal.
+        Return the normalization of the (m,n)-mode for a circular duct. Modes are normalized to be orthonormal.
 
         .. math ::
             C_{mn} = \sqrt{A * (J_m(r\kappa)^2 - J_{m-1}(r\kappa) * J_{m+1}(r\kappa))}
 
-        where :math:`J_m` is the bessel function of 1 Kind and Order *m*, and :math:`\kappa` is the eigenvalue, see
+        where :math:`J_m` is the Bessel function of 1 Kind and Order *m*, and :math:`\kappa` is the eigenvalue, see
         :meth:`.WaveGuide.get_eigenvalue` .
 
         Parameters
         ----------
         m : int
-            Mode order in circumferential direction. The plane-wave has the order 0.
+            Mode-order in the circumferential direction. The plane wave has the order 0.
         n : integer
-            Mode order in radial direction. The plane-wave has the order 0.
+            Mode-order in the radial direction. The plane wave has the order 0.
         kwargs : additional arguments
 
         Returns
@@ -576,18 +584,18 @@ class WaveGuide:
 
     def get_psi(self, m, n, pos1, pos2, **kwargs):
         """
-        Place holder for the normalized mode shapes of the (m,n)-mode.  When the object is initialized, this function
+        Placeholder for the normalized mode shapes of the (m,n)-mode.  When the object is initialized, this function
         may be overwritten either by one of the predefined normalization functions :meth:`.WaveGuide.get_psi_circular`
-        (circular wave-guide) and :meth:`.WaveGuide.get_psi_rect` (rectangular wave-guide), or a custom function.
+        (circular waveguide) and :meth:`.WaveGuide.get_psi_rect` (rectangular waveguide), or a custom function.
 
         Parameters
         ----------
         m : int or array_like
-            Mode order in first direction. If the wave-guide is circular, m indicates the circumferential mode order.
-            The plane-wave has the order 0.
+            Mode-order in the first direction. If the waveguide is circular, m indicates the circumferential mode-order.
+            The plane wave has the order 0.
         n : int or array_like
-            Mode order in second direction. If the wave-guide is circular, n indicates the radial mode order.
-            The plane-wave has the order 0.
+            Mode-order in the second direction. If the waveguide is circular, n indicates the radial mode-order.
+            The plane wave has the order 0.
 
         pos1 : float or array_like
             Position in the first direction.
@@ -605,8 +613,8 @@ class WaveGuide:
 
     def get_psi_circular(self, m, n, r, phi, **kwargs):
         r"""
-        Return the normalized mode-shape of the (m,n)-mode for a circular duct. Modes are normalized to be
-        ortho-normal, see :meth:`.WaveGuide.get_c`.
+        Return the normalized mode shapee of the (m,n)-mode for a circular duct. Modes are normalized to be
+        orthonormal, see :meth:`.WaveGuide.get_c`\.
 
         .. math::
             \Psi_{mn} = \frac{J_m(R\kappa_{mn}) \mathbf{e}^{\mathbf{i} m \phi}}{C_{mn}}
@@ -616,9 +624,9 @@ class WaveGuide:
         Parameters
         ----------
         m : int
-            Mode order in circumferential direction. The plane-wave has the order 0.
+            Mode-order in the circumferential direction. The plane wave has the order 0.
         n : integer
-            Mode order in radial direction. The plane-wave has the order 0.
+            Mode-order in the radial direction. The plane wave has the order 0.
         r : float or array_like
             Radial-coordinate.
         phi : float or array_like
@@ -628,15 +636,15 @@ class WaveGuide:
         Returns
         -------
         complex
-            The normalized mode-shape of the (m,n)-mode at position (pos1,pos2).
+            The normalized mode shapee of the (m,n)-mode at position (pos1,pos2).
         """
 
         return 1 / self.get_c(m, n) * jn(m, r * self.get_kappa(m, n)) * numpy.exp(m * phi * 1j)
 
     def get_psi_rect(self, m, n, x, y):
         r"""
-        Return the normalized mode-shape of the (m,n)-mode for a rectangular duct. Modes are normalized to be
-        ortho-normal, see :meth:`.WaveGuide.get_c`.
+        Return the normalized mode shapee of the (m,n)-mode for a rectangular duct. Modes are normalized to be
+        orthonormal, see :meth:`.WaveGuide.get_c`\.
 
         .. math::
             \Psi_{mn} = \frac{\cos(\pi m x/a)*\cos(\pi n y/b)}{C_{mn}}
@@ -644,13 +652,13 @@ class WaveGuide:
         Parameters
         ----------
         m : int
-            Mode order in x-direction. The plane-wave has the order 0.
+            Mode-order in x-direction. The plane wave has the order 0.
         n : integer
-            Mode order in y-direction. The plane-wave has the order 0.
+            Mode-order in y-direction. The plane wave has the order 0.
         x : float or array_like
             X - coordinate.
         y: float or array_like
-            Y - coodinate.
+            Y - coordinate.
         kwargs : additional arguments
 
         Returns
@@ -665,48 +673,48 @@ class WaveGuide:
 
     def get_wavenumber(self, m, n, f, **kwargs):
         r"""
-        Compute the wave number of the (m,n)-mode at the frequency f [Hz].
+        Compute the wavenumber of the (m,n)-mode at the frequency f [Hz].
 
         .. math ::
             k_{mn\pm} = \pm K_0 \frac{\omega}{c} \frac{\sqrt{1-(\kappa_{mn}c/\omega)^2(1-M)}\mp M}{1-M^2}
 
-        Here, :math:`K_0` is the dissipation factor (see :meth:`.WaveGuide.get_K0` )
+        Here, :math:`K_0` is the dissipation factor (see :meth:`.WaveGuide.get_K0`\),
         :math:`\omega` is the angular frequency, :math:`c` is the speed of sound,
-        :math:`\kappa_{mn}` is the eigenvalue (see :meth:`.WaveGuide.get_eigenvalue` ), and
+        :math:`\kappa_{mn}` is the eigenvalue (see :meth:`.WaveGuide.get_eigenvalue`\), and
         :math:`M` is the Mach_number.
 
         .. Note ::
             The flow is assumed to move in :math:`z_+` direction. For flow towards
             math:`z_-`, you can either use a negative Mach_number or call :meth:`.WaveGuide.set_flip_flow`
-            with flipFlow = True.
+            with flipFlow = *True*.
 
         Parameters
         ----------
         m : int or array_like
-            Mode order in first direction. If the wave-guide is circular, m indicates the circumferential mode order.
-            The plane-wave has the order 0.
+            Mode-order in the first direction. If the waveguide is circular, m indicates the circumferential mode-order.
+            The plane wave has the order 0.
         n : int or array_like
-            Mode order in second direction. If the wave-guide is circular, n indicates the radial mode order.
-            The plane-wave has the order 0.
+            Mode-order in the second direction. If the waveguide is circular, n indicates the radial mode-order.
+            The plane wave has the order 0.
         f : float
             Frequency [Hz].
         dissipative : bool, optional
-            If True, the wave-number is corrected with the dissipation model. If false, :math:`K_0` is set to 1.
-            Defaults to True.
+            If *True*, the wavenumber is corrected with the dissipation model. If *False*, :math:`K_0` is set to 1.
+            Defaults to *True*.
         sign : 1 or -1
             The direction of the wave propagation. 1 means :math:`z_+` direction, -1 means :math:`z_-` direction.
-            Set to 1 for :math:`k_+` and  -1 for :math:`k_-`. Defaults to 1.
+            Set to 1 for :math:`k_+` and  -1 for :math:`k_-`\. Defaults to 1.
 
         Returns
         -------
         complex or array_like
-            The wave-number(s) of the (m,n)-mode at the frequency f [Hz].
+            The wavenumber(s) of the (m,n)-mode at the frequency f [Hz].
         """
 
         sign = kwargs.get("sign", 1)
 
         omega = 2 * numpy.pi * f
-        # This guarantees the correct sign for the wave number. See Rienstra, Introduction to Duct Acoustics.
+        # This guarantees the correct sign for the wavenumber. See Rienstra, Introduction to Duct Acoustics.
         root = numpy.sqrt(numpy.array(numpy.square(
             self.get_kappa(m, n) * self.speed_of_sound / omega) * (1 - numpy.square(self.M)) - 1, dtype=numpy.complex))
         root *= -1j
@@ -723,7 +731,7 @@ class WaveGuide:
 
     def find_cuton(self, f, **kwargs):
         """
-        Returns the number of cut-on modes for the the specified frequency `f` Hz.
+        Returns the number of cut-on modes for the specified frequency `f` Hz.
 
         Parameters
         ----------
@@ -755,7 +763,7 @@ class WaveGuide:
 
     def get_T(self, m, n, f, z, **kwargs):
         """
-        Returns the mode-propagation :math:`T_{i\pm}(z)`.
+        Returns the mode-propagation :math:`T_{i\pm}(z)`\.
 
         .. math ::
             T{mn\pm} = e^{-\mathbf{i}k_{mn\pm} z}
@@ -764,11 +772,11 @@ class WaveGuide:
         Parameters
         ----------
         m : int or array_like
-            Mode order in first direction. If the wave-guide is circular, m indicates the circumferential mode order.
-            The plane-wave has the order 0.
+            Mode-order in the first direction. If the waveguide is circular, m indicates the circumferential mode-order.
+            The plane wave has the order 0.
         n : int or array_like
-            Mode order in second direction. If the wave-guide is circular, n indicates the radial mode order.
-            The plane-wave has the order 0.
+            Mode-order in the second direction. If the waveguide is circular, n indicates the radial mode-order.
+            The plane wave has the order 0.
         f : float
             Frequency [Hz].
         kwargs: additional arguments
@@ -822,7 +830,7 @@ class WaveGuide:
         .. math::
             p = M p_\pm
 
-        where :math:`p_\pm` is row vector containing the complex mode amplitudes of all cut-on modes in :math:`z_+` and
+        where :math:`p_\pm` is a row vector containing the complex mode amplitudes of all cut-on modes in :math:`z_+` and
         :math:`z_-` direction and :math:`p` is a row vector with measured pressure values in the frequency domain.
 
         Parameters
@@ -830,14 +838,14 @@ class WaveGuide:
         f : float
             Frequency in Hz.
         Mach_number : float, optional
-            Mach_number of the medium inside the wave-guide. Defaults to the value stored in self.M. If specified, it
+            Mach_number of the medium inside the waveguide. Defaults to the value stored in self.M. If specified, it
             overwrites the
             value stored in self.M.
         t : float, optional
-            Temperature of the medium inside the wave-guide. Defaults tot the value stored in self.t. If specified, it
+            Temperature of the medium inside the waveguide. Defaults to the value stored in self.t. If specified, it
             overwrites the value stored in self.t.
         Ps : float, optional
-            Static pressure of the medium inside the wave-guide. Defaults tot the value stored in self.p0. If specified,
+            Static pressure of the medium inside the waveguide. Defaults to the value stored in self.p0. If specified,
             it overwrites the value stored in self.p0.
 
         Returns
@@ -858,7 +866,7 @@ class WaveGuide:
 
     def get_K0(self, m, n, f, **kwargs):
         """
-        Place holder for the dissipation function for the wave-number. When the object is initiated, this function may
+        Placeholder for the dissipation function for the wavenumber. When the object is initiated, this function may
         be overwritten either by one of the predefined dissipation functions :meth:`WaveGuide.getK0_kirchoff`,
         :meth:`WaveGuide.getK0_dokumaci`, meth:`WaveGuide.get_K0_stinso_rect`,
         meth:`WaveGuide.get_K0_stinson_cricular` or a custom function.
@@ -866,11 +874,11 @@ class WaveGuide:
         Parameters
         ----------
         m : int or array_like
-            Mode order in first direction. If the wave-guide is circular, m indicates the circumferential mode order.
-            The plane-wave has the order 0.
+            Mode-order in the first direction. If the waveguide is circular, m indicates the circumferential mode-order.
+            The plane wave has the order 0.
         n : int or array_like
-            Mode order in second direction. If the wave-guide is circular, n indicates the radial mode order.
-            The plane-wave has the order 0.
+            Mode-order in the second direction. If the waveguide is circular, n indicates the radial mode-order.
+            The plane wave has the order 0.
         f : float, optional
             Frequency in Hz.
         kwargs : additional arguments
@@ -885,18 +893,18 @@ class WaveGuide:
 
     def K0_kirchoff(self, m, n, f, **kwargs):
         """
-        Dissipation function for the wave-number based on
+        Dissipation function for the wavenumber based on
         `Kirchoff's thermo-viscous dissipation <https://onlinelibrary.wiley.com/doi/abs/10.1002/andp.18682100602>`_
-        in wave-guides without flow.
+        in waveguides without flow.
 
         Parameters
         ----------
         m : int or array_like
-            Mode order in first direction. If the wave-guide is circular, m indicates the circumferential mode order.
-            The plane-wave has the order 0.
+            Mode-order in the first direction. If the waveguide is circular, m indicates the circumferential mode-order.
+            The plane wave has the order 0.
         n : int or array_like
-            Mode order in second direction. If the wave-guide is circular, n indicates the radial mode order.
-            The plane-wave has the order 0.
+            Mode-order in the second direction. If the waveguide is circular, n indicates the radial mode-order.
+            The plane wave has the order 0.
         f : float, optional
             Frequency in Hz.
         kwargs : additional arguments
@@ -915,18 +923,18 @@ class WaveGuide:
 
     def K0_dokumaci(self, m, n, f, **kwargs):
         """
-        Dissipation function for the wave-number based on
+        Dissipation function for the wavenumber based on
         `Dokumaci's thermo-viscous dissipation <https://www.sciencedirect.com/science/article/pii/S0022460X14004921>`_
-        in wave-guides with flow and higher order modes.
+        in waveguides with flow and higher-order modes.
 
         Parameters
         ----------
         m : int or array_like
-            Mode order in first direction. If the wave-guide is circular, m indicates the circumferential mode order.
-            The plane-wave has the order 0.
+            Mode-order in the first direction. If the waveguide is circular, m indicates the circumferential mode-order.
+            The plane wave has the order 0.
         n : int or array_like
-            Mode order in second direction. If the wave-guide is circular, n indicates the radial mode order.
-            The plane-wave has the order 0.
+            Mode-order in the second direction. If the waveguide is circular, n indicates the radial mode-order.
+            The plane wave has the order 0.
         f : float, optional
             Frequency in Hz.
         kwargs : additional arguments
@@ -940,7 +948,7 @@ class WaveGuide:
         values = self.get_domainvalues()
         values["f"] = f
         values["sign"] = kwargs.get("sign", 1)
-        # We extract the convection part from the wave number, as dokumacis solution for the dissipation includes
+        # We extract the convection part from the wavenumber, as dokumacis solution for the dissipation includes
         # convection
         convection = (-1 * values["sign"]
                       * self.get_wavenumber(m,n,f,dissipative=False) * self.speed_of_sound/(2*numpy.pi*f))
@@ -953,7 +961,7 @@ class WaveGuide:
                                             (values, m), xtol=1e-12)
 
         dissipation = (dissipation[0] - 1j * dissipation[1])
-        # Again, we have to divide by the convection, as, later in our wave-number, convection will be multiplied
+        # Again, we have to divide by the convection, as, later in our wavenumber, convection will be multiplied
         return dissipation/convection
 
     def _Fs(self, nu, omega, **kwargs):
@@ -966,7 +974,7 @@ class WaveGuide:
         omega : float
             Angular frequency
         elements : int
-            Number of elements used for the series expension. Higher values give more accurate results, but take longer
+            Number of elements used for the series expansion. Higher values give more accurate results but take longer
             to compute. Defaults to 150.
         kwargs : additional arguments
 
@@ -1015,16 +1023,16 @@ class WaveGuide:
 
     def K0_stinson_rect(self, m, n, f, **kwargs):
         """
-        Dissipation function for the wave-number based on
+        Dissipation function for the wavenumber based on
         `Stinson's thermo-viscous dissipation <https://asa.scitation.org/doi/10.1121/1.400379>`_ in rectangular
-        wave-guides without flow.
+        waveguides without flow.
 
         Parameters
         ----------
         m : int or array_like
-            Mode order in x-direction. The plane-wave has the order 0.
+            Mode-order in x-direction. The plane wave has the order 0.
         n : int or array_like
-            Mode order in y-direction. The plane-wave has the order 0.
+            Mode-order in y-direction. The plane wave has the order 0.
         f : float, optional
             Frequency in Hz.
         elements: int, optional
@@ -1052,16 +1060,16 @@ class WaveGuide:
 
     def K0_stinson_circular(self, m, n, f, **kwargs):
         """
-        Dissipation function for the wave-number based on
+        Dissipation function for the wavenumber based on
         `Stinson's thermo-viscous dissipation <https://asa.scitation.org/doi/10.1121/1.400379>`_ in circular
-        wave-guides without flow.
+        waveguides without flow.
 
         Parameters
         ----------
         m : int or array_like
-            Mode order in circumferential direction. The plane-wave has the order 0.
+            Mode-order in the circumferential direction. The plane wave has the order 0.
         n : int or array_like
-            Mode order in radial direction. The plane-wave has the order 0.
+            Mode-order in the radial direction. The plane wave has the order 0.
         f : float, optional
             Frequency in Hz.
         kwargs : additional arguments
@@ -1126,13 +1134,13 @@ class WaveGuide:
 
     def _Dokumaci(self, kguess, options, m):
         """
-        Computes the thermo-viscous dissipation based on Dokumaci's dissipation model for flow ducts and higher order
+        Computes the thermo-viscous dissipation based on Dokumaci's dissipation model for flow ducts and higher-order
         modes.
 
         Parameters
         ----------
         kguess : tuple
-            Guess for the wave-number (real(k), imag(k)).
+            Guess for the wavenumber (real(k), imag(k)).
         options : dict
             contains the parameters of the decomposition domain:
                 {Mach_number, radius, speed_of_sound, density, dynamic_viscosity, specific_heat, thermal_conductivity,
@@ -1192,8 +1200,8 @@ class WaveGuide:
 
     def decompose(self, data, f_col, probe_col, case_col=None, Mach_col=None, temperature_col=None, Ps_col=None):
         """
-        Decompose sound fields into modal components. The function can handle several frequencies and test-cases at the
-        same time. It returns :math:`p_\pm` , which contain all complex mode amplitudes of the propagating modes in
+        Decompose sound fields into modal components. The function can process several frequencies and test-cases at the
+        same time. It returns :math:`p_\pm` , which contains all complex mode amplitudes of the propagating modes in
         :math:`z_+` and :math:`p_-` direction.
 
         .. math::
@@ -1201,9 +1209,44 @@ class WaveGuide:
 
         Parameters
         ----------
-        data : numpy.ndArray
-            All data that is needed for the decomposition. The columns in the file are the relevant parameters
-            for the decomposition, the rows are different frequencies and test-cases.
+        data : numpy.ndArray (complex)
+            All data that is needed for the decomposition. The columns in the srray are the relevant parameters
+            for the decomposition (pressure values, frequencies, temperatures, Mach-numbers).
+            The rows are measurements of different frequencies and test-cases. A measurement of a single frequency
+            for a test with three microphones would have at following format:
+
+            ==============  ====  ====  ====
+            Frequency [Hz]  Mic1  Mic2  Mic3
+            ==============  ====  ====  ====
+            f1              P1    P2    P3
+            ==============  ====  ====  ====
+
+            A measurement of multiple frequencies
+            for a test with three microphones would have at following format:
+
+            ==============  ====  ====  ====
+            Frequency [Hz]  Mic1  Mic2  Mic3
+            ==============  ====  ====  ====
+            f1              P11   P21   P31
+            f2              P12   P22   P32
+            ...             ...   ...   ...
+            fn              P1n   p2n   p3n
+            ==============  ====  ====  ====
+
+            A measurement of a multiple frequencies with multiple tests per frequencies
+            with three microphones would have at following format:
+
+            ==============  ====  ====  ====  ====
+            Frequency [Hz]  Case  Mic1  Mic2  Mic3
+            ==============  ====  ====  ====  ====
+            f1              0     P110  P210  P310
+            f1              1     P111  P211  p311
+            ...             ...   ...   ...   ...
+            fn              m     p1nm  p2nm  p3nm
+            ==============  ====  ====  ====  ====
+
+            The method can process any number of testcases, frequencies, and microphones.
+
         f_col : integer
             Column in *data* in which the frequency is stored. Starting with 0.
         probe_col : array_like
@@ -1213,18 +1256,18 @@ class WaveGuide:
             Column in *data* in which the case number is stored. Important for tests with multiple loudspeakers.
             Starting with 0. Defaults to None.
         Mach_col : integer, optional
-            Column in *data* in which the Mach_number is stored. Starting with 0. Defaults to None.
+            Column in *data* in which the Mach-number is stored. Starting with 0. Defaults to None.
         temperature_col : integer, optional
             Column in *data* in which the temperature is stored. Starting with 0. Defaults to None.
-        Ps_col : integer, optionals
+        Ps_col : integer, optional
             Column in *data* in which the static pressure is stored. Starting with 0. Defaults to None.
 
         Returns
         -------
         tuple
-            Returns (*decomposed_fieldss*, *headers*). *decomposed_fieldss* (numpy.ndArray) contains the complex mode
+            Returns (*decomposed_fields*, *headers*). *decomposed_fields* (numpy.ndArray) contains the complex mode
             amplitudes (as columns) for the different test cases (as rows). *headers* (list) contains the names of the
-            columns in *decomposed_fieldss*.
+            columns in *decomposed_fields*.
         """
 
 

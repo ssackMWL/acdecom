@@ -1,0 +1,6 @@
+acdecom.WaveGuide.get\_eigenvalue\_circular
+===========================================
+
+.. currentmodule:: acdecom
+
+.. automethod:: WaveGuide.get_eigenvalue_circular

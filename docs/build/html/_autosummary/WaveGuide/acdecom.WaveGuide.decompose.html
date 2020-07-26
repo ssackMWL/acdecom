@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>acdecom.WaveGuide.decompose &#8212; acdecom 20/06/12 documentation</title>
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="acdecom.WaveGuide.find_cuton" href="acdecom.WaveGuide.find_cuton.html" />
+    <link rel="prev" title="acdecom.WaveGuide.__init__" href="acdecom.WaveGuide.__init__.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.find_cuton.html" title="acdecom.WaveGuide.find_cuton"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.__init__.html" title="acdecom.WaveGuide.__init__"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../acdecom.WaveGuide.html" accesskey="U">acdecom.WaveGuide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">acdecom.WaveGuide.decompose</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="acdecom-waveguide-decompose">
+<h1>acdecom.WaveGuide.decompose<a class="headerlink" href="#acdecom-waveguide-decompose" title="Permalink to this headline">¶</a></h1>
+<dl class="py method">
+<dt id="acdecom.WaveGuide.decompose">
+<code class="sig-prename descclassname">WaveGuide.</code><code class="sig-name descname">decompose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">f_col</span></em>, <em class="sig-param"><span class="n">probe_col</span></em>, <em class="sig-param"><span class="n">case_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Mach_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">temperature_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Ps_col</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#acdecom.WaveGuide.decompose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decompose sound fields into modal components. The function can process several frequencies and test-cases at the
+same time. It returns <span class="math notranslate nohighlight">\(p_\pm\)</span> , which contains all complex mode amplitudes of the propagating modes in
+<span class="math notranslate nohighlight">\(z_+\)</span> and <span class="math notranslate nohighlight">\(p_-\)</span> direction.</p>
+<div class="math notranslate nohighlight">
+\[p_\pm = M^{-1} p\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndArray</em><em> (</em><em>complex</em><em>)</em>) – <p>All data that is needed for the decomposition. The columns in the srray are the relevant parameters
+for the decomposition (pressure values, frequencies, temperatures, Mach-numbers).
+The rows are measurements of different frequencies and test-cases. A measurement of a single frequency
+for a test with three microphones would have at following format:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 54%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Frequency [Hz]</p></th>
+<th class="head"><p>Mic1</p></th>
+<th class="head"><p>Mic2</p></th>
+<th class="head"><p>Mic3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>f1</p></td>
+<td><p>P1</p></td>
+<td><p>P2</p></td>
+<td><p>P3</p></td>
+</tr>
+</tbody>
+</table>
+<p>A measurement of multiple frequencies
+for a test with three microphones would have at following format:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 54%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Frequency [Hz]</p></th>
+<th class="head"><p>Mic1</p></th>
+<th class="head"><p>Mic2</p></th>
+<th class="head"><p>Mic3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>f1</p></td>
+<td><p>P11</p></td>
+<td><p>P21</p></td>
+<td><p>P31</p></td>
+</tr>
+<tr class="row-odd"><td><p>f2</p></td>
+<td><p>P12</p></td>
+<td><p>P22</p></td>
+<td><p>P32</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>fn</p></td>
+<td><p>P1n</p></td>
+<td><p>p2n</p></td>
+<td><p>p3n</p></td>
+</tr>
+</tbody>
+</table>
+<p>A measurement of a multiple frequencies with multiple tests per frequencies
+with three microphones would have at following format:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Frequency [Hz]</p></th>
+<th class="head"><p>Case</p></th>
+<th class="head"><p>Mic1</p></th>
+<th class="head"><p>Mic2</p></th>
+<th class="head"><p>Mic3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>f1</p></td>
+<td><p>0</p></td>
+<td><p>P110</p></td>
+<td><p>P210</p></td>
+<td><p>P310</p></td>
+</tr>
+<tr class="row-odd"><td><p>f1</p></td>
+<td><p>1</p></td>
+<td><p>P111</p></td>
+<td><p>P211</p></td>
+<td><p>p311</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>fn</p></td>
+<td><p>m</p></td>
+<td><p>p1nm</p></td>
+<td><p>p2nm</p></td>
+<td><p>p3nm</p></td>
+</tr>
+</tbody>
+</table>
+<p>The method can process any number of testcases, frequencies, and microphones.</p>
+</p></li>
+<li><p><strong>f_col</strong> (<em>integer</em>) – Column in <em>data</em> in which the frequency is stored. Starting with 0.</p></li>
+<li><p><strong>probe_col</strong> (<em>array_like</em>) – Columns in <em>data</em> in which the pressure at the different probe locations is stored. Starting with 0.
+The order of the probes must be the same as for the microphone positions.</p></li>
+<li><p><strong>case_col</strong> (<em>integer</em><em>, </em><em>optional</em>) – Column in <em>data</em> in which the case number is stored. Important for tests with multiple loudspeakers.
+Starting with 0. Defaults to None.</p></li>
+<li><p><strong>Mach_col</strong> (<em>integer</em><em>, </em><em>optional</em>) – Column in <em>data</em> in which the Mach-number is stored. Starting with 0. Defaults to None.</p></li>
+<li><p><strong>temperature_col</strong> (<em>integer</em><em>, </em><em>optional</em>) – Column in <em>data</em> in which the temperature is stored. Starting with 0. Defaults to None.</p></li>
+<li><p><strong>Ps_col</strong> (<em>integer</em><em>, </em><em>optional</em>) – Column in <em>data</em> in which the static pressure is stored. Starting with 0. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Returns (<em>decomposed_fields</em>, <em>headers</em>). <em>decomposed_fields</em> (numpy.ndArray) contains the complex mode
+amplitudes (as columns) for the different test cases (as rows). <em>headers</em> (list) contains the names of the
+columns in <em>decomposed_fields</em>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="acdecom.WaveGuide.__init__.html"
+                        title="previous chapter">acdecom.WaveGuide.__init__</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="acdecom.WaveGuide.find_cuton.html"
+                        title="next chapter">acdecom.WaveGuide.find_cuton</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/_autosummary/WaveGuide/acdecom.WaveGuide.decompose.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.find_cuton.html" title="acdecom.WaveGuide.find_cuton"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="acdecom.WaveGuide.__init__.html" title="acdecom.WaveGuide.__init__"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../acdecom.WaveGuide.html" >acdecom.WaveGuide</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">acdecom.WaveGuide.decompose</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Stefan Sack.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

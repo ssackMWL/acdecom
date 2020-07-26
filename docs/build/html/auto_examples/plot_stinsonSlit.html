@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to define custom wavenumber functions &#8212; acdecom 20/06/12 documentation</title>
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The empty circular duct with flow and higher-order modes" href="plot_higherOrderModes.html" />
+    <link rel="prev" title="How to compute wavenumbers in rectangular ducts" href="plot_rectangularWaveNumbers.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plot_higherOrderModes.html" title="The empty circular duct with flow and higher-order modes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="plot_rectangularWaveNumbers.html" title="How to compute wavenumbers in rectangular ducts"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to define custom wavenumber functions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-stinsonslit-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="how-to-define-custom-wavenumber-functions">
+<span id="sphx-glr-auto-examples-plot-stinsonslit-py"></span><h1>How to define custom wavenumber functions<a class="headerlink" href="#how-to-define-custom-wavenumber-functions" title="Permalink to this headline">¶</a></h1>
+<p>In this example we define a custom wavenumber. We inherit from the <a class="reference internal" href="../_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveGuide</span></code></a> class and overwrite the internal
+<a class="reference internal" href="../_autosummary/WaveGuide/acdecom.WaveGuide.get_wavenumber.html#acdecom.WaveGuide.get_wavenumber" title="acdecom.WaveGuide.get_wavenumber"><code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_wavenumber()</span></code></a> function. By doing so, we have access to the internal class arguments, such as the domain properties.</p>
+<a class="reference internal image-reference" href="auto_examples\wave1.jpg"><img alt="auto_examples\wave1.jpg" src="auto_examples\wave1.jpg" style="width: 800px;" /></a>
+<div class="section" id="inheritance">
+<h2>1. Inheritance<a class="headerlink" href="#inheritance" title="Permalink to this headline">¶</a></h2>
+<p>First, we import the packages needed for the this example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">acdecom</span>
+</pre></div>
+</div>
+<p>We create a new class, that we call “slit”. We use the <em>slit</em> class to define a wavenumber for slit-like
+waveguides within the plane wave range. We implement Stinson’s wavenumber for slits. We inherit from
+<em>acdecom.testdomain</em> and overwrite two of the methods, namely <code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_K0()</span></code>, which computes the dissipation factor, and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">WaveGuide.get_eigenvalue()</span></code>, which computes the Eigenvalue <span class="math notranslate nohighlight">\(\kappa_{m,n}\)</span> that is used to compute the wavenumbers and cut-ons for
+higher-order modes.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>As the overwritten methods are called by other internal functions, they must have the same positional parameters
+as their original. Refer to the documentation for more information.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">slit</span><span class="p">(</span><span class="n">acdecom</span><span class="o">.</span><span class="n">WaveGuide</span><span class="p">):</span>
+    <span class="c1"># We inherit all methods and internal variables from *WaveGuide*</span>
+    <span class="k">def</span> <span class="nf">compute_f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_K0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># here, we overwrite the function to compute the dissipation factor.</span>
+        <span class="c1"># We have to use the same  positional parameters as in the original function</span>
+        <span class="n">constants</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_domainvalues</span><span class="p">()</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;dynamic_viscosity&quot;</span><span class="p">]</span>
+        <span class="n">cp</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;specific_heat&quot;</span><span class="p">]</span>
+        <span class="n">kth</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;thermal_conductivity&quot;</span><span class="p">]</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;density&quot;</span><span class="p">]</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="n">constants</span><span class="p">[</span><span class="s2">&quot;heat_capacity&quot;</span><span class="p">]</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">omega</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">mu</span><span class="o">/</span><span class="n">rho</span>
+        <span class="n">vp</span> <span class="o">=</span> <span class="n">kth</span><span class="o">/</span><span class="n">rho</span><span class="o">/</span><span class="n">cp</span>
+        <span class="n">wavenumber</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">gamma</span> <span class="o">-</span> <span class="p">(</span><span class="n">gamma</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_f</span><span class="p">(</span><span class="n">vp</span> <span class="o">/</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+                                            <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_f</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">))</span><span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span>
+
+        <span class="k">return</span> <span class="n">wavenumber</span>
+
+    <span class="k">def</span> <span class="nf">get_eigenvalue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1"># here we overwrite the function to compute the eigenvalues for the wavenumbers and cut-ons.</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="initialization">
+<h2>2. Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
+<p>We create a WaveGuide in slit shape with a dimension of 0.01 m and without flow.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We have to leave the <em>damping</em> argument empty; otherwise our new <em>get_K0</em> function will be overwritten by
+a predefined function.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">slit_width</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># m</span>
+<span class="n">Mach_number</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">slit_duct</span> <span class="o">=</span> <span class="n">slit</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="n">slit_width</span><span class="p">,),</span> <span class="n">M</span><span class="o">=</span><span class="n">Mach_number</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="extract-the-wavenumbers">
+<h2>3. Extract the Wavenumbers<a class="headerlink" href="#extract-the-wavenumbers" title="Permalink to this headline">¶</a></h2>
+<p>We can now loop through the frequencies of interest and compute the wavenumbers for the slit</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wavenumber_slit</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">frequencies</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">2000</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">frequencies</span><span class="p">:</span>
+    <span class="n">wavenumber_slit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">slit_duct</span><span class="o">.</span><span class="n">get_wavenumber</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot">
+<h2>4. Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h2>
+<p>We want to compare the wavenumbers of the slit to the wavenumbers of a rectangular duct with different ratios of
+slit length and slit width and plot the results</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratio_values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">plasma_r</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">ratio_values</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">rIndx</span><span class="p">,</span> <span class="n">ratio</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ratio_values</span><span class="p">):</span>
+    <span class="n">rect_duct</span> <span class="o">=</span> <span class="n">acdecom</span><span class="o">.</span><span class="n">WaveGuide</span><span class="p">(</span><span class="n">cross_section</span><span class="o">=</span><span class="s2">&quot;rectangular&quot;</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="n">slit_width</span><span class="p">,</span> <span class="n">slit_width</span><span class="o">*</span><span class="n">ratio</span><span class="p">),</span>
+                                  <span class="n">damping</span><span class="o">=</span><span class="s2">&quot;stinson&quot;</span><span class="p">)</span>
+    <span class="n">wavenumber_rect</span><span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">frequencies</span><span class="p">:</span>
+        <span class="n">wavenumber_rect</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rect_duct</span><span class="o">.</span><span class="n">get_wavenumber</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">wavenumber_rect</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">rIndx</span><span class="p">],</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Rect. b/a = &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ratio</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">wavenumber_slit</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Slit-shape&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [Hz]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$Im(k_</span><span class="si">{00}</span><span class="s2">)$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Comparing the dispersion of slit-shaped and </span><span class="se">\n</span><span class="s2">  rectangular ducts without flow&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="Comparing the dispersion of slit-shaped and    rectangular ducts without flow" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_stinsonSlit_001.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  21.045 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-stinsonslit-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/e6f4026b6694c59e00bf4293631a652e/plot_stinsonSlit.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_stinsonSlit.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/e1005ebe0b30970bd553731635298cc2/plot_stinsonSlit.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_stinsonSlit.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to define custom wavenumber functions</a><ul>
+<li><a class="reference internal" href="#inheritance">1. Inheritance</a></li>
+<li><a class="reference internal" href="#initialization">2. Initialization</a></li>
+<li><a class="reference internal" href="#extract-the-wavenumbers">3. Extract the Wavenumbers</a></li>
+<li><a class="reference internal" href="#plot">4. Plot</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="plot_rectangularWaveNumbers.html"
+                        title="previous chapter">How to compute wavenumbers in rectangular ducts</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="plot_higherOrderModes.html"
+                        title="next chapter">The empty circular duct with flow and higher-order modes</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/auto_examples/plot_stinsonSlit.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plot_higherOrderModes.html" title="The empty circular duct with flow and higher-order modes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="plot_rectangularWaveNumbers.html" title="How to compute wavenumbers in rectangular ducts"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">acdecom 20/06/12 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to define custom wavenumber functions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Stefan Sack.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>
