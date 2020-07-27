@@ -16,7 +16,7 @@ In this example we compute the transmission-loss of a duct liner with grazing fl
 example was part of `this study <https://arc.aiaa.org/doi/abs/10.2514/6.2020-2615>`_\,
 which is referred to here for further details.
 
-.. image:: ../image/liner.png
+.. image:: ../../image/liner.png
    :width: 800
 
 1. Initialization
@@ -126,7 +126,8 @@ We define lists with microphone positions at the upstream and downstream side an
  Next, we read the measurement data. The measurement must be pre-processed in a format that is understood by the
  :class:`.WaveGuide` object. Generally, this is a numpy.ndarray, wherein the columns contain the measurement data,
  such as the measured frequency and the pressures at the microphone locations. The rows can be different frequencies
- or different sound excitations (cases). In this example, the measurement was post-processed into a .txt file and can
+ or different sound excitations (cases). In this example, the measurement was post-processed into the
+ `liner.txt <https://github.com/ssackMWL/acdecom/blob/master/examples/data/liner.txt>`_ file and can
  be loaded with the `numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_ function.
 
 .. note::
@@ -357,7 +358,7 @@ From the scattering matrix, we can compute the transmission loss and the power d
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 3 minutes  12.532 seconds)
+   **Total running time of the script:** ( 2 minutes  42.646 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_liner.py:

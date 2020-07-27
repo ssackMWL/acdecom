@@ -5,8 +5,8 @@ How to post-process simulation data
 
 In this example we compute the scattering through an orifice plate in a circular duct with flow. The data is extracted
 from two Comsol Multiphysics simulations with a similar setup as in
-`this study <https://www.sciencedirect.com/science/article/abs/pii/S0022460X17306752?via%3Dihub>`\.
-The geometry is the same as in `this study <https://www.sciencedirect.com/science/article/abs/pii/S0022460X09002995>`\.
+`this study <https://www.sciencedirect.com/science/article/abs/pii/S0022460X17306752?via%3Dihub>`_\.
+The geometry is the same as in `this study <https://www.sciencedirect.com/science/article/abs/pii/S0022460X09002995>`_\.
 """
 
 # %%
@@ -55,10 +55,12 @@ td_DS = acdecom.WaveGuide(dimensions=(r, ), cross_section=section, f_max=f_max, 
 # 2. Data Preparation
 # -------------------
 # We will post-process the direct data output using Comsol Multiphysics. The solution is two-dimensional and
-# axi-symmetric. Using Comsol, we exported the two files *comsolOrificeCase1.txt* and *comsolOrificeCase2.txt*. They contain
-# the same geometry. However, the orifice was either excited with an acoustic plane wave from the upstream direction
-# or from the downstream direction. We will post-process both files in order to extract the sound scattering in both
-# directions.
+# axi-symmetric. Using Comsol, we exported the two files
+# `comsolOrificeCase1.txt <https://github.com/ssackMWL/acdecom/blob/master/examples/data/comsolOrifice1.txt>`_
+# and `comsolOrificeCase2.txt <https://github.com/ssackMWL/acdecom/blob/master/examples/data/comsolOrifice1.txt>`_\.
+# They contain the same geometry. However, the orifice was either excited with an acoustic plane wave from the upstream
+# direction or from the downstream direction. We will post-process both files in order to extract the sound scattering
+# in both directions.
 #
 # First, we print the header of the files to get a cleaner view of their structure.
 

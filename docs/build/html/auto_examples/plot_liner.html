@@ -58,7 +58,7 @@
 <p>In this example we compute the transmission-loss of a duct liner with grazing flow (M=0.25). The data used in this
 example was part of <a class="reference external" href="https://arc.aiaa.org/doi/abs/10.2514/6.2020-2615">this study</a>,
 which is referred to here for further details.</p>
-<a class="reference internal image-reference" href="../_images/liner.png"><img alt="../_images/liner.png" src="../_images/liner.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="auto_examples\../../image/liner.png"><img alt="auto_examples\../../image/liner.png" src="auto_examples\../../image/liner.png" style="width: 800px;" /></a>
 <div class="section" id="initialization">
 <h2>1. Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
 <p>First, we import the packages needed for this example.</p>
@@ -124,7 +124,8 @@ expensive.</p>
 <div><p>Next, we read the measurement data. The measurement must be pre-processed in a format that is understood by the
 <a class="reference internal" href="../_autosummary/acdecom.WaveGuide.html#acdecom.WaveGuide" title="acdecom.WaveGuide"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveGuide</span></code></a> object. Generally, this is a numpy.ndarray, wherein the columns contain the measurement data,
 such as the measured frequency and the pressures at the microphone locations. The rows can be different frequencies
-or different sound excitations (cases). In this example, the measurement was post-processed into a .txt file and can
+or different sound excitations (cases). In this example, the measurement was post-processed into the
+<a class="reference external" href="https://github.com/ssackMWL/acdecom/blob/master/examples/data/liner.txt">liner.txt</a> file and can
 be loaded with the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html">numpy.loadtxt</a> function.</p>
 </div></blockquote>
 <div class="admonition note">
@@ -243,7 +244,7 @@ found in <a class="reference external" href="https://www.ingentaconnect.com/cont
 </pre></div>
 </div>
 <img alt="plot liner" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_liner_002.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 3 minutes  12.532 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 2 minutes  42.646 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-liner-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/926104a17b2039da511aaf7951bfd689/plot_liner.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_liner.py</span></code></a></p>

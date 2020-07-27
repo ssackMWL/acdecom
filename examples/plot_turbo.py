@@ -64,9 +64,10 @@ td_outlet.set_microphone_positions(z_outlet, r_outlet, phi_outlet, cylindrical_c
 # Next, we read the measurement data. The measurement must be pre-processed in a format that is understood by the
 # *WaveGuide* object. This is generally a numpy.ndArray, wherein the columns contain the measurement data, such
 # as the measured frequency, the pressure values for that frequency, the bulk Mach-number, and the temperature.
-# The rows can be different frequencies or different sound excitations (cases). In this example the
-# measurement was post-processed into a .txt file and can be loaded with the
-# `numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_ function.
+# The rows can be different frequencies or different sound excitations (cases). In this example the measurement was
+# post-processed into the `turbo.txt <https://github.com/ssackMWL/acdecom/blob/master/examples/data/turbo.txt>`_
+# file and can be loaded with the `numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_
+# function.
 #
 # .. note::
 #   The pressure used for the decomposition must be pre-processed, for example to account for microphone calibration.

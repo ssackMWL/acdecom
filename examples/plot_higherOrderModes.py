@@ -43,7 +43,9 @@ td_ds = acdecom.WaveGuide(dimensions=(radius,), cross_section=section, f_max=f_m
 # 2. Sensor Positions
 # -------------------
 #
-# The microphone coordinates are saved in a .txt file.
+# The microphone coordinates are saved in the
+# `emptyUS.mic <https://github.com/ssackMWL/acdecom/blob/master/examples/data/emptyUS.mic>`_ and
+# `emptyDS.mic <https://github.com/ssackMWL/acdecom/blob/master/examples/data/emptyDS.mic>`_ file.
 
 td_us.read_microphonefile("data/emptyUS.mic", cylindrical_coordinates=True)
 td_ds.read_microphonefile("data/emptyDS.mic", cylindrical_coordinates=True)
@@ -62,8 +64,10 @@ td_ds.read_microphonefile("data/emptyDS.mic", cylindrical_coordinates=True)
 # this must be a numpy.ndarray, wherein the columns contain the measurement data, such as the measured frequency, the
 # pressure values for that frequency, the bulk Mach-number, and the temperature. The rows can be different frequencies
 # or different sound excitations (cases). In this example, the
-# measurement was post-processed into a .txt file and can be loaded with the
-# `numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_ function.
+# measurement was post-processed into the
+# `higherOrderModes.txt <https://github.com/ssackMWL/acdecom/blob/master/examples/data/higherOrderModes.txt>`_ file and
+# can be loaded with the `numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_
+# function.
 #
 # .. note::
 #   The pressure used for the decomposition must be pre-processed, for example to account for microphone.

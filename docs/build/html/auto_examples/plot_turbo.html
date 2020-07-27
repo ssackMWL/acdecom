@@ -61,7 +61,7 @@ pressure with flush-mounted microphones, we will use the temperature, and flow v
 measurement. The data comes from a study performed at the
 <a class="reference external" href="https://www.ccgex.kth.se/">Competence Center of Gas Exchange (CCGEx)</a>.</p>
 </div></blockquote>
-<a class="reference internal image-reference" href="../_images/compressor.jpg"><img alt="../_images/compressor.jpg" src="../_images/compressor.jpg" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="auto_examples\../../image/compressor.JPG"><img alt="auto_examples\../../image/compressor.JPG" src="auto_examples\../../image/compressor.JPG" style="width: 800px;" /></a>
 <div class="section" id="initialization">
 <h2>1. Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
 <p>First, we import the packages needed for this example.</p>
@@ -118,9 +118,10 @@ either set negative or the argument <em>flipFlow</em> must be set to <em>True</e
 <p>Next, we read the measurement data. The measurement must be pre-processed in a format that is understood by the
 <em>WaveGuide</em> object. This is generally a numpy.ndArray, wherein the columns contain the measurement data, such
 as the measured frequency, the pressure values for that frequency, the bulk Mach-number, and the temperature.
-The rows can be different frequencies or different sound excitations (cases). In this example the
-measurement was post-processed into a .txt file and can be loaded with the
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html">numpy.loadtxt</a> function.</p>
+The rows can be different frequencies or different sound excitations (cases). In this example the measurement was
+post-processed into the <a class="reference external" href="https://github.com/ssackMWL/acdecom/blob/master/examples/data/turbo.txt">turbo.txt</a>
+file and can be loaded with the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html">numpy.loadtxt</a>
+function.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The pressure used for the decomposition must be pre-processed, for example to account for microphone calibration.</p>
@@ -223,7 +224,7 @@ found in <a class="reference external" href="https://www.ingentaconnect.com/cont
 </pre></div>
 </div>
 <img alt="plot turbo" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_turbo_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.672 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.418 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-turbo-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/bebbf1c8da429255e19b48453e9b988e/plot_turbo.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_turbo.py</span></code></a></p>

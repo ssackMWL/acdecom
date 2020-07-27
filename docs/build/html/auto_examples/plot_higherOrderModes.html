@@ -58,7 +58,7 @@
 <p>In this example we extract higher-order modes from measurement data in a circular duct with moderate mean flow.
 The data is part of <a class="reference external" href="https://www.ingentaconnect.com/content/dav/aaua/2016/00000102/00000005/art00008">this study</a>,
 which is referred here for further details.</p>
-<a class="reference internal image-reference" href="../_images/wave2.jpg"><img alt="../_images/wave2.jpg" src="../_images/wave2.jpg" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="auto_examples\../../image/wave2.JPG"><img alt="auto_examples\../../image/wave2.JPG" src="auto_examples\../../image/wave2.JPG" style="width: 800px;" /></a>
 <div class="section" id="initialization">
 <h2>1. Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
 <p>First, we import the packages needed for this example.</p>
@@ -91,7 +91,9 @@ either set negative or the argument <em>flip_flow</em> must be set to <em>True</
 </div>
 <div class="section" id="sensor-positions">
 <h2>2. Sensor Positions<a class="headerlink" href="#sensor-positions" title="Permalink to this headline">¶</a></h2>
-<p>The microphone coordinates are saved in a .txt file.</p>
+<p>The microphone coordinates are saved in the
+<a class="reference external" href="https://github.com/ssackMWL/acdecom/blob/master/examples/data/emptyUS.mic">emptyUS.mic</a> and
+<a class="reference external" href="https://github.com/ssackMWL/acdecom/blob/master/examples/data/emptyDS.mic">emptyDS.mic</a> file.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">td_us</span><span class="o">.</span><span class="n">read_microphonefile</span><span class="p">(</span><span class="s2">&quot;data/emptyUS.mic&quot;</span><span class="p">,</span> <span class="n">cylindrical_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">td_ds</span><span class="o">.</span><span class="n">read_microphonefile</span><span class="p">(</span><span class="s2">&quot;data/emptyDS.mic&quot;</span><span class="p">,</span> <span class="n">cylindrical_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
@@ -109,8 +111,10 @@ circumferential position from deg. to radians.</p>
 this must be a numpy.ndarray, wherein the columns contain the measurement data, such as the measured frequency, the
 pressure values for that frequency, the bulk Mach-number, and the temperature. The rows can be different frequencies
 or different sound excitations (cases). In this example, the
-measurement was post-processed into a .txt file and can be loaded with the
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html">numpy.loadtxt</a> function.</p>
+measurement was post-processed into the
+<a class="reference external" href="https://github.com/ssackMWL/acdecom/blob/master/examples/data/higherOrderModes.txt">higherOrderModes.txt</a> file and
+can be loaded with the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html">numpy.loadtxt</a>
+function.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The pressure used for the decomposition must be pre-processed, for example to account for microphone.</p>
@@ -220,7 +224,7 @@ found in <a class="reference external" href="https://www.ingentaconnect.com/cont
 </pre></div>
 </div>
 <img alt="Empty Circular Duct with Higher Order Modes" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_higherOrderModes_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 1 minutes  29.245 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 1 minutes  56.200 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-higherordermodes-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/184d45d93504d94af703fe028a9737ce/plot_higherOrderModes.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_higherOrderModes.py</span></code></a></p>

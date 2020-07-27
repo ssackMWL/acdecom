@@ -17,7 +17,7 @@ The noise scattering at a compressor inlet and outlet
  measurement. The data comes from a study performed at the
  `Competence Center of Gas Exchange (CCGEx) <https://www.ccgex.kth.se/>`_\.
 
-.. image:: ../image/compressor.jpg
+.. image:: ../../image/compressor.JPG
    :width: 800
 
 1. Initialization
@@ -120,9 +120,10 @@ We define lists with microphone positions at the intake and outlet and assign th
 Next, we read the measurement data. The measurement must be pre-processed in a format that is understood by the
 *WaveGuide* object. This is generally a numpy.ndArray, wherein the columns contain the measurement data, such
 as the measured frequency, the pressure values for that frequency, the bulk Mach-number, and the temperature.
-The rows can be different frequencies or different sound excitations (cases). In this example the
-measurement was post-processed into a .txt file and can be loaded with the
-`numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_ function.
+The rows can be different frequencies or different sound excitations (cases). In this example the measurement was
+post-processed into the `turbo.txt <https://github.com/ssackMWL/acdecom/blob/master/examples/data/turbo.txt>`_
+file and can be loaded with the `numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_
+function.
 
 .. note::
   The pressure used for the decomposition must be pre-processed, for example to account for microphone calibration.
@@ -328,7 +329,7 @@ Finally, we can plot the transmission and reflection coefficients at the intake 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.672 seconds)
+   **Total running time of the script:** ( 0 minutes  4.418 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_turbo.py:

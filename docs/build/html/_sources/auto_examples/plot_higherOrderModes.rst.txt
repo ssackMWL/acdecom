@@ -16,7 +16,7 @@ In this example we extract higher-order modes from measurement data in a circula
 The data is part of `this study <https://www.ingentaconnect.com/content/dav/aaua/2016/00000102/00000005/art00008>`_\,
 which is referred here for further details.
 
-.. image:: ../image/wave2.jpg
+.. image:: ../../image/wave2.JPG
    :width: 800
 
 1. Initialization
@@ -78,7 +78,9 @@ We create objects for the upstream and the downstream section of the duct.
 2. Sensor Positions
 -------------------
 
-The microphone coordinates are saved in a .txt file.
+The microphone coordinates are saved in the
+`emptyUS.mic <https://github.com/ssackMWL/acdecom/blob/master/examples/data/emptyUS.mic>`_ and
+`emptyDS.mic <https://github.com/ssackMWL/acdecom/blob/master/examples/data/emptyDS.mic>`_ file.
 
 
 .. code-block:: default
@@ -106,8 +108,10 @@ The measurement must be pre-processed in a format that is understood by the *Wav
 this must be a numpy.ndarray, wherein the columns contain the measurement data, such as the measured frequency, the
 pressure values for that frequency, the bulk Mach-number, and the temperature. The rows can be different frequencies
 or different sound excitations (cases). In this example, the
-measurement was post-processed into a .txt file and can be loaded with the
-`numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_ function.
+measurement was post-processed into the
+`higherOrderModes.txt <https://github.com/ssackMWL/acdecom/blob/master/examples/data/higherOrderModes.txt>`_ file and
+can be loaded with the `numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_
+function.
 
 .. note::
   The pressure used for the decomposition must be pre-processed, for example to account for microphone.
@@ -314,7 +318,7 @@ Finally, we can plot the transmission and reflection coefficients of the 6 propa
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  29.245 seconds)
+   **Total running time of the script:** ( 1 minutes  56.200 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_higherOrderModes.py:

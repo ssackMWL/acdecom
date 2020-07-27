@@ -17,7 +17,7 @@ Kirchoff dissipation, with the model proposed by `Stinson <https://asa.scitation
 The Kirchoff model was derived for circular ducts and is adapted to rectangular ducts by computing an equivalent
 wetted perimeter with the hydraulic radius. The Stinson model is derived for arbitrary cross sections.
 
-.. image:: ../image/channel.jpg
+.. image:: ../../image/channel.JPG
    :width: 800
 
 1. Initialization
@@ -148,7 +148,7 @@ different dissipation models.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.820 seconds)
+   **Total running time of the script:** ( 0 minutes  4.703 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_rectangularWaveNumbers.py:

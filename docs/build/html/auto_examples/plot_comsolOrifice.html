@@ -57,9 +57,9 @@
 <span id="sphx-glr-auto-examples-plot-comsolorifice-py"></span><h1>How to post-process simulation data<a class="headerlink" href="#how-to-post-process-simulation-data" title="Permalink to this headline">¶</a></h1>
 <p>In this example we compute the scattering through an orifice plate in a circular duct with flow. The data is extracted
 from two Comsol Multiphysics simulations with a similar setup as in
-<cite>this study &lt;https://www.sciencedirect.com/science/article/abs/pii/S0022460X17306752?via%3Dihub&gt;</cite>.
-The geometry is the same as in <cite>this study &lt;https://www.sciencedirect.com/science/article/abs/pii/S0022460X09002995&gt;</cite>.</p>
-<a class="reference internal image-reference" href="../_images/orifice.png"><img alt="../_images/orifice.png" src="../_images/orifice.png" style="width: 800px;" /></a>
+<a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S0022460X17306752?via%3Dihub">this study</a>.
+The geometry is the same as in <a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S0022460X09002995">this study</a>.</p>
+<a class="reference internal image-reference" href="auto_examples\../../image/orifice.png"><img alt="auto_examples\../../image/orifice.png" src="auto_examples\../../image/orifice.png" style="width: 800px;" /></a>
 <div class="section" id="initialization">
 <h2>1. Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
 <p>First, we import the packages needed for this example.</p>
@@ -106,10 +106,12 @@ do not need to take them into account for our post-processing.</p>
 <div class="section" id="data-preparation">
 <h2>2. Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">¶</a></h2>
 <p>We will post-process the direct data output using Comsol Multiphysics. The solution is two-dimensional and
-axi-symmetric. Using Comsol, we exported the two files <em>comsolOrificeCase1.txt</em> and <em>comsolOrificeCase2.txt</em>. They contain
-the same geometry. However, the orifice was either excited with an acoustic plane wave from the upstream direction
-or from the downstream direction. We will post-process both files in order to extract the sound scattering in both
-directions.</p>
+axi-symmetric. Using Comsol, we exported the two files
+<a class="reference external" href="https://github.com/ssackMWL/acdecom/blob/master/examples/data/comsolOrifice1.txt">comsolOrificeCase1.txt</a>
+and <a class="reference external" href="https://github.com/ssackMWL/acdecom/blob/master/examples/data/comsolOrifice1.txt">comsolOrificeCase2.txt</a>.
+They contain the same geometry. However, the orifice was either excited with an acoustic plane wave from the upstream
+direction or from the downstream direction. We will post-process both files in order to extract the sound scattering
+in both directions.</p>
 <p>First, we print the header of the files to get a cleaner view of their structure.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/comsolOrifice1.txt&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pressurefile</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">):</span>
@@ -311,7 +313,7 @@ amplification can occur.</p>
 </pre></div>
 </div>
 <img alt="Sound transmission including absorption and amplification at   an orifice plate with flow." class="sphx-glr-single-img" src="../_images/sphx_glr_plot_comsolOrifice_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  10.221 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  9.975 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-comsolorifice-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/02328285f9d0c517bec0a6011aba29fa/plot_comsolOrifice.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_comsolOrifice.py</span></code></a></p>

@@ -5,14 +5,14 @@
 
 Computation times
 =================
-**00:01.199** total execution time for **auto_examples** files:
+**01:56.200** total execution time for **auto_examples** files:
 
 +---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_RienstraCutOns.py` (``plot_RienstraCutOns.py``)                 | 00:01.199 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_higherOrderModes.py` (``plot_higherOrderModes.py``)             | 01:56.200 | 0.0 MB |
++---------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_auto_examples_plot_RienstraCutOns.py` (``plot_RienstraCutOns.py``)                 | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_plot_comsolOrifice.py` (``plot_comsolOrifice.py``)                   | 00:00.000 | 0.0 MB |
-+---------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_higherOrderModes.py` (``plot_higherOrderModes.py``)             | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_plot_liner.py` (``plot_liner.py``)                                   | 00:00.000 | 0.0 MB |
 +---------------------------------------------------------------------------------------------------+-----------+--------+

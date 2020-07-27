@@ -9,7 +9,7 @@ which is referred to here for further details.
 """
 
 # %%
-# .. image:: ../image/liner.png
+# .. image:: ../../image/liner.png
 #    :width: 800
 
 
@@ -72,7 +72,8 @@ td_downstream.set_microphone_positions(z_downstream, x_downstream, y_downstream)
 #  Next, we read the measurement data. The measurement must be pre-processed in a format that is understood by the
 #  :class:`.WaveGuide` object. Generally, this is a numpy.ndarray, wherein the columns contain the measurement data,
 #  such as the measured frequency and the pressures at the microphone locations. The rows can be different frequencies
-#  or different sound excitations (cases). In this example, the measurement was post-processed into a .txt file and can
+#  or different sound excitations (cases). In this example, the measurement was post-processed into the
+#  `liner.txt <https://github.com/ssackMWL/acdecom/blob/master/examples/data/liner.txt>`_ file and can
 #  be loaded with the `numpy.loadtxt <https://numpy.org/doc/stable/reference/generated/numpy.loadtxt.html>`_ function.
 #
 # .. note::
