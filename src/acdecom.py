@@ -34,7 +34,7 @@ class WaveGuide:
                     - "no": no predefined dissipation is used. This should be used to implement custom dissipation models.
                     - "kirchoff":  `Kirchoff's thermo-viscous dissipation <https://onlinelibrary.wiley.com/doi/abs/10.1002/andp.18682100602>`_ is used.
                     - "dokumaci": `Dokumaci's thermo-viscous dissipation <https://www.sciencedirect.com/science/article/pii/S0022460X14004921>`_ is used. Useful for higher order modes and waveguides with flow.
-                    - "stinson": `Stinson's thermo-viscous dissipation <https://asa.scitation.org/doi/10.1121/1.400379>`_is used.
+                    - "stinson": `Stinson's thermo-viscous dissipation <https://asa.scitation.org/doi/10.1121/1.400379>`_ is used.
             distance : float
                 The distance between the decomposition cross section and the first microphone. Defaults to 0.
             cross_section : {"circular","rectangular","custom"}, optional
