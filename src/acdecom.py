@@ -867,9 +867,9 @@ class WaveGuide:
     def get_K0(self, m, n, f, **kwargs):
         """
         Placeholder for the dissipation function for the wavenumber. When the object is initiated, this function may
-        be overwritten either by one of the predefined dissipation functions :meth:`WaveGuide.getK0_kirchoff`,
-        :meth:`WaveGuide.getK0_dokumaci`\, meth:`WaveGuide.get_K0_stinso_rect`\,
-        meth:`WaveGuide.get_K0_stinson_cricular` or a custom function.
+        be overwritten either by one of the predefined dissipation functions :meth:`.WaveGuide.getK0_kirchoff`\,
+        :meth:`.WaveGuide.getK0_dokumaci`\, meth:`.WaveGuide.get_K0_stinso_rect`\,
+        meth:`.WaveGuide.get_K0_stinson_cricular` or a custom function.
 
         Parameters
         ----------
